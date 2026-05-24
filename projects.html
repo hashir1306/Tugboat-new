@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Tugboat Urban Interiors</title>
+    <meta name="description" content="Explore Tugboat Urban Interiors portfolio of residential, commercial, and retail spaces.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="projects-page about-page"> <!-- Using about-page class to inherit dark navbar styles initially -->
+    <!-- Navbar -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="index.html"><img src="logo 1.png" alt="Tugboat Logo"></a>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="projects.html" class="active">Projects</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="nav-cta">
+                <a href="contact.html" class="btn btn-outline">Let's Connect &rarr;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="projects-hero about-hero">
+            <div class="about-hero-image projects-hero-image">
+                <img src="assets/villa_1.png" alt="Projects Hero Image">
+            </div>
+            <div class="dark-panel projects-dark-panel">
+                <div class="orange-label">PROJECTS</div>
+                <h1 class="about-title">Spaces Delivered<br><span class="italic-orange">With Detail.</span></h1>
+                <p>A collection of thoughtfully designed interiors across residential, commercial, and retail spaces. Each project is a reflection of our commitment to quality, detail, and timeless design.</p>
+            </div>
+        </section>
+
+        <!-- Sub Navigation / Filter -->
+        <div class="projects-subnav-container">
+            <div class="projects-subnav">
+                <div class="subnav-tabs">
+                    <button class="tab-btn active" data-tab="residential">RESIDENTIAL</button>
+                    <button class="tab-btn" data-tab="commercial">COMMERCIAL</button>
+                    <button class="tab-btn" data-tab="retail">RETAIL</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Content Area -->
+        <section class="projects-content-area">
+            
+            <!-- Residential Projects -->
+            <div class="tab-content active" id="tab-residential">
+                
+                <!-- Project List View -->
+                <div id="residential-list" class="project-list-grid">
+                    <div class="project-list-item reveal fade-bottom" onclick="document.getElementById('residential-list').style.display='none'; document.getElementById('residential-mono').style.display='block';">
+                        <img src="assets/villa_1.png" alt="The Mono House">
+                        <div class="item-overlay">
+                            <h3>The Mono House</h3>
+                            <p>Dubai Hills / 2025</p>
+                            <span class="view-text">View Project &rarr;</span>
+                        </div>
+                    </div>
+                    <div class="project-list-item reveal fade-bottom" style="transition-delay: 0.1s;" onclick="document.getElementById('residential-list').style.display='none'; document.getElementById('residential-brutalism').style.display='block';">
+                        <img src="assets/villa_2.png" alt="Brutalism Softened">
+                        <div class="item-overlay">
+                            <h3>Brutalism Softened</h3>
+                            <p>Palm Jumeirah / 2024</p>
+                            <span class="view-text">View Project &rarr;</span>
+                        </div>
+                    </div>
+                    <div class="project-list-item reveal fade-bottom" style="transition-delay: 0.2s;" onclick="document.getElementById('residential-list').style.display='none'; document.getElementById('residential-element').style.display='block';">
+                        <img src="assets/villa_1.png" alt="Element Villa">
+                        <div class="item-overlay">
+                            <h3>Element Villa</h3>
+                            <p>Emirates Hills / 2025</p>
+                            <span class="view-text">View Project &rarr;</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail View: Mono House -->
+                <div id="residential-mono" style="display: none; animation: fadeIn 0.5s ease;">
+                    <div class="project-view">
+                        <div class="project-details-col">
+                            <a href="javascript:void(0)" class="back-link" onclick="document.getElementById('residential-mono').style.display='none'; document.getElementById('residential-list').style.display='grid';">&larr; BACK TO RESIDENTIAL</a>
+                            <h2 class="project-name">The Mono House</h2>
+                            <p class="project-location">Dubai Hills</p>
+                            
+                            <p class="project-desc">A refined villa interior where timeless materials, bespoke joinery, and curated furnishings come together to create an atmosphere of quiet luxury and comfort.</p>
+                            
+                            <div class="project-specs">
+                                <div class="spec-row"><span class="spec-label">TYPE</span><span class="spec-value">Residential</span></div>
+                                <div class="spec-row"><span class="spec-label">SIZE</span><span class="spec-value">12,000 sq. ft.</span></div>
+                                <div class="spec-row"><span class="spec-label">STATUS</span><span class="spec-value">Completed</span></div>
+                                <div class="spec-row"><span class="spec-label">YEAR</span><span class="spec-value">2025</span></div>
+                            </div>
+                            
+                            <a href="javascript:void(0)" class="btn-next-project" onclick="document.getElementById('residential-mono').style.display='none'; document.getElementById('residential-brutalism').style.display='block'; window.scrollTo(0, 0);">VIEW NEXT PROJECT &rarr;</a>
+                        </div>
+                        <div class="project-gallery-col">
+                            <div class="gallery-grid">
+                                <div class="grid-main">
+                                    <img src="assets/villa_1.png" alt="Mono House Living">
+                                </div>
+                                <div class="grid-side">
+                                    <img src="assets/villa_2.png" alt="Mono House Kitchen">
+                                    <img src="assets/villa_1.png" alt="Mono House Bedroom">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail View: Brutalism Softened -->
+                <div id="residential-brutalism" style="display: none; animation: fadeIn 0.5s ease;">
+                    <div class="project-view">
+                        <div class="project-details-col">
+                            <a href="javascript:void(0)" class="back-link" onclick="document.getElementById('residential-brutalism').style.display='none'; document.getElementById('residential-list').style.display='grid';">&larr; BACK TO RESIDENTIAL</a>
+                            <h2 class="project-name">Brutalism Softened</h2>
+                            <p class="project-location">Palm Jumeirah</p>
+                            
+                            <p class="project-desc">Balancing raw structural elements with refined interior textures to create a striking yet highly livable contemporary home.</p>
+                            
+                            <div class="project-specs">
+                                <div class="spec-row"><span class="spec-label">TYPE</span><span class="spec-value">Residential</span></div>
+                                <div class="spec-row"><span class="spec-label">SIZE</span><span class="spec-value">9,500 sq. ft.</span></div>
+                                <div class="spec-row"><span class="spec-label">STATUS</span><span class="spec-value">Completed</span></div>
+                                <div class="spec-row"><span class="spec-label">YEAR</span><span class="spec-value">2024</span></div>
+                            </div>
+                            
+                            <a href="javascript:void(0)" class="btn-next-project" onclick="document.getElementById('residential-brutalism').style.display='none'; document.getElementById('residential-element').style.display='block'; window.scrollTo(0, 0);">VIEW NEXT PROJECT &rarr;</a>
+                        </div>
+                        <div class="project-gallery-col">
+                            <div class="gallery-grid">
+                                <div class="grid-main">
+                                    <img src="assets/villa_2.png" alt="Brutalism Softened Main">
+                                </div>
+                                <div class="grid-side">
+                                    <img src="assets/villa_1.png" alt="Brutalism Softened Details">
+                                    <img src="assets/villa_2.png" alt="Brutalism Softened Living">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail View: Element Villa -->
+                <div id="residential-element" style="display: none; animation: fadeIn 0.5s ease;">
+                    <div class="project-view">
+                        <div class="project-details-col">
+                            <a href="javascript:void(0)" class="back-link" onclick="document.getElementById('residential-element').style.display='none'; document.getElementById('residential-list').style.display='grid';">&larr; BACK TO RESIDENTIAL</a>
+                            <h2 class="project-name">Element Villa</h2>
+                            <p class="project-location">Emirates Hills</p>
+                            
+                            <p class="project-desc">A seamless integration of nature and architecture, featuring expansive glazing, natural stone, and warm timber finishes.</p>
+                            
+                            <div class="project-specs">
+                                <div class="spec-row"><span class="spec-label">TYPE</span><span class="spec-value">Residential</span></div>
+                                <div class="spec-row"><span class="spec-label">SIZE</span><span class="spec-value">15,000 sq. ft.</span></div>
+                                <div class="spec-row"><span class="spec-label">STATUS</span><span class="spec-value">Completed</span></div>
+                                <div class="spec-row"><span class="spec-label">YEAR</span><span class="spec-value">2025</span></div>
+                            </div>
+                            
+                            <a href="javascript:void(0)" class="btn-next-project" onclick="document.getElementById('residential-element').style.display='none'; document.getElementById('residential-mono').style.display='block'; window.scrollTo(0, 0);">VIEW NEXT PROJECT &rarr;</a>
+                        </div>
+                        <div class="project-gallery-col">
+                            <div class="gallery-grid">
+                                <div class="grid-main">
+                                    <img src="assets/villa_1.png" alt="Element Villa Main">
+                                </div>
+                                <div class="grid-side">
+                                    <img src="assets/villa_2.png" alt="Element Villa Pool">
+                                    <img src="assets/villa_1.png" alt="Element Villa Interior">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Commercial Projects -->
+            <div class="tab-content" id="tab-commercial">
+                
+                <!-- Project List View -->
+                <div id="commercial-list" class="project-list-grid">
+                    <div class="project-list-item reveal fade-bottom" onclick="document.getElementById('commercial-list').style.display='none'; document.getElementById('commercial-syndicate').style.display='block';">
+                        <img src="assets/office.png" alt="The Syndicate HQ">
+                        <div class="item-overlay">
+                            <h3>The Syndicate HQ</h3>
+                            <p>DIFC / 2024</p>
+                            <span class="view-text">View Project &rarr;</span>
+                        </div>
+                    </div>
+                    <div class="project-list-item reveal fade-bottom" style="transition-delay: 0.1s;" onclick="document.getElementById('commercial-list').style.display='none'; document.getElementById('commercial-vertex').style.display='block';">
+                        <img src="assets/office.png" alt="Vertex Studio">
+                        <div class="item-overlay">
+                            <h3>Vertex Studio</h3>
+                            <p>Design District / 2023</p>
+                            <span class="view-text">View Project &rarr;</span>
+                        </div>
+                    </div>
+                    <div class="project-list-item reveal fade-bottom" style="transition-delay: 0.2s;" onclick="document.getElementById('commercial-list').style.display='none'; document.getElementById('commercial-flow').style.display='block';">
+                        <img src="assets/office.png" alt="Flow Agency">
+                        <div class="item-overlay">
+                            <h3>Flow Agency</h3>
+                            <p>Media City / 2025</p>
+                            <span class="view-text">View Project &rarr;</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail View: The Syndicate HQ -->
+                <div id="commercial-syndicate" style="display: none; animation: fadeIn 0.5s ease;">
+                    <div class="project-view">
+                        <div class="project-details-col">
+                            <a href="javascript:void(0)" class="back-link" onclick="document.getElementById('commercial-syndicate').style.display='none'; document.getElementById('commercial-list').style.display='grid';">&larr; BACK TO COMMERCIAL</a>
+                            <h2 class="project-name">The Syndicate HQ</h2>
+                            <p class="project-location">DIFC</p>
+                            
+                            <p class="project-desc">An inspiring commercial environment designed to foster collaboration and creativity, featuring open-plan layouts, acoustic treatments, and abundant natural light.</p>
+                            
+                            <div class="project-specs">
+                                <div class="spec-row"><span class="spec-label">TYPE</span><span class="spec-value">Commercial</span></div>
+                                <div class="spec-row"><span class="spec-label">SIZE</span><span class="spec-value">8,500 sq. ft.</span></div>
+                                <div class="spec-row"><span class="spec-label">STATUS</span><span class="spec-value">Completed</span></div>
+                                <div class="spec-row"><span class="spec-label">YEAR</span><span class="spec-value">2024</span></div>
+                            </div>
+                            
+                            <a href="javascript:void(0)" class="btn-next-project" onclick="document.getElementById('commercial-syndicate').style.display='none'; document.getElementById('commercial-vertex').style.display='block'; window.scrollTo(0, 0);">VIEW NEXT PROJECT &rarr;</a>
+                        </div>
+                        <div class="project-gallery-col">
+                            <div class="gallery-grid">
+                                <div class="grid-main">
+                                    <img src="assets/office.png" alt="Syndicate Main">
+                                </div>
+                                <div class="grid-side">
+                                    <img src="assets/office.png" alt="Syndicate Meeting Room">
+                                    <img src="assets/office.png" alt="Syndicate Breakout Area">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail View: Vertex Studio -->
+                <div id="commercial-vertex" style="display: none; animation: fadeIn 0.5s ease;">
+                    <div class="project-view">
+                        <div class="project-details-col">
+                            <a href="javascript:void(0)" class="back-link" onclick="document.getElementById('commercial-vertex').style.display='none'; document.getElementById('commercial-list').style.display='grid';">&larr; BACK TO COMMERCIAL</a>
+                            <h2 class="project-name">Vertex Studio</h2>
+                            <p class="project-location">Design District</p>
+                            
+                            <p class="project-desc">A highly functional workspace blending raw industrial elements with refined, ergonomic furniture for a modern design studio.</p>
+                            
+                            <div class="project-specs">
+                                <div class="spec-row"><span class="spec-label">TYPE</span><span class="spec-value">Commercial</span></div>
+                                <div class="spec-row"><span class="spec-label">SIZE</span><span class="spec-value">6,000 sq. ft.</span></div>
+                                <div class="spec-row"><span class="spec-label">STATUS</span><span class="spec-value">Completed</span></div>
+                                <div class="spec-row"><span class="spec-label">YEAR</span><span class="spec-value">2023</span></div>
+                            </div>
+                            
+                            <a href="javascript:void(0)" class="btn-next-project" onclick="document.getElementById('commercial-vertex').style.display='none'; document.getElementById('commercial-flow').style.display='block'; window.scrollTo(0, 0);">VIEW NEXT PROJECT &rarr;</a>
+                        </div>
+                        <div class="project-gallery-col">
+                            <div class="gallery-grid">
+                                <div class="grid-main">
+                                    <img src="assets/office.png" alt="Vertex Main">
+                                </div>
+                                <div class="grid-side">
+                                    <img src="assets/office.png" alt="Vertex Workspace">
+                                    <img src="assets/office.png" alt="Vertex Lounge">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail View: Flow Agency -->
+                <div id="commercial-flow" style="display: none; animation: fadeIn 0.5s ease;">
+                    <div class="project-view">
+                        <div class="project-details-col">
+                            <a href="javascript:void(0)" class="back-link" onclick="document.getElementById('commercial-flow').style.display='none'; document.getElementById('commercial-list').style.display='grid';">&larr; BACK TO COMMERCIAL</a>
+                            <h2 class="project-name">Flow Agency</h2>
+                            <p class="project-location">Media City</p>
+                            
+                            <p class="project-desc">Designed for dynamic teams, featuring agile working zones, acoustic pods, and vibrant communal spaces to inspire creativity.</p>
+                            
+                            <div class="project-specs">
+                                <div class="spec-row"><span class="spec-label">TYPE</span><span class="spec-value">Commercial</span></div>
+                                <div class="spec-row"><span class="spec-label">SIZE</span><span class="spec-value">10,500 sq. ft.</span></div>
+                                <div class="spec-row"><span class="spec-label">STATUS</span><span class="spec-value">Completed</span></div>
+                                <div class="spec-row"><span class="spec-label">YEAR</span><span class="spec-value">2025</span></div>
+                            </div>
+                            
+                            <a href="javascript:void(0)" class="btn-next-project" onclick="document.getElementById('commercial-flow').style.display='none'; document.getElementById('commercial-syndicate').style.display='block'; window.scrollTo(0, 0);">VIEW NEXT PROJECT &rarr;</a>
+                        </div>
+                        <div class="project-gallery-col">
+                            <div class="gallery-grid">
+                                <div class="grid-main">
+                                    <img src="assets/office.png" alt="Flow Main">
+                                </div>
+                                <div class="grid-side">
+                                    <img src="assets/office.png" alt="Flow Meeting">
+                                    <img src="assets/office.png" alt="Flow Kitchen">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Retail Projects -->
+            <div class="tab-content" id="tab-retail">
+                
+                <!-- Project List View -->
+                <div id="retail-list" class="project-list-grid">
+                    <div class="project-list-item reveal fade-bottom" onclick="document.getElementById('retail-list').style.display='none'; document.getElementById('retail-aura').style.display='block';">
+                        <img src="assets/retail.png" alt="Aura Flagship">
+                        <div class="item-overlay">
+                            <h3>Aura Flagship</h3>
+                            <p>Dubai Mall / 2024</p>
+                            <span class="view-text">View Project &rarr;</span>
+                        </div>
+                    </div>
+                    <div class="project-list-item reveal fade-bottom" style="transition-delay: 0.1s;" onclick="document.getElementById('retail-list').style.display='none'; document.getElementById('retail-lumina').style.display='block';">
+                        <img src="assets/retail.png" alt="Lumina Boutique">
+                        <div class="item-overlay">
+                            <h3>Lumina Boutique</h3>
+                            <p>City Walk / 2025</p>
+                            <span class="view-text">View Project &rarr;</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail View: Aura Flagship -->
+                <div id="retail-aura" style="display: none; animation: fadeIn 0.5s ease;">
+                    <div class="project-view">
+                        <div class="project-details-col">
+                            <a href="javascript:void(0)" class="back-link" onclick="document.getElementById('retail-aura').style.display='none'; document.getElementById('retail-list').style.display='grid';">&larr; BACK TO RETAIL</a>
+                            <h2 class="project-name">Aura Flagship</h2>
+                            <p class="project-location">Dubai Mall</p>
+                            
+                            <p class="project-desc">A striking retail space that elevates the brand experience. Custom displays, atmospheric lighting, and luxurious materials guide the customer journey.</p>
+                            
+                            <div class="project-specs">
+                                <div class="spec-row"><span class="spec-label">TYPE</span><span class="spec-value">Retail</span></div>
+                                <div class="spec-row"><span class="spec-label">SIZE</span><span class="spec-value">3,200 sq. ft.</span></div>
+                                <div class="spec-row"><span class="spec-label">STATUS</span><span class="spec-value">Completed</span></div>
+                                <div class="spec-row"><span class="spec-label">YEAR</span><span class="spec-value">2024</span></div>
+                            </div>
+                            
+                            <a href="javascript:void(0)" class="btn-next-project" onclick="document.getElementById('retail-aura').style.display='none'; document.getElementById('retail-lumina').style.display='block'; window.scrollTo(0, 0);">VIEW NEXT PROJECT &rarr;</a>
+                        </div>
+                        <div class="project-gallery-col">
+                            <div class="gallery-grid">
+                                <div class="grid-main">
+                                    <img src="assets/retail.png" alt="Aura Front">
+                                </div>
+                                <div class="grid-side">
+                                    <img src="assets/retail.png" alt="Aura Display">
+                                    <img src="assets/retail.png" alt="Aura Fitting Rooms">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail View: Lumina Boutique -->
+                <div id="retail-lumina" style="display: none; animation: fadeIn 0.5s ease;">
+                    <div class="project-view">
+                        <div class="project-details-col">
+                            <a href="javascript:void(0)" class="back-link" onclick="document.getElementById('retail-lumina').style.display='none'; document.getElementById('retail-list').style.display='grid';">&larr; BACK TO RETAIL</a>
+                            <h2 class="project-name">Lumina Boutique</h2>
+                            <p class="project-location">City Walk</p>
+                            
+                            <p class="project-desc">An intimate, gallery-like shopping environment that uses strategic lighting and minimalist shelving to make products the sole focus.</p>
+                            
+                            <div class="project-specs">
+                                <div class="spec-row"><span class="spec-label">TYPE</span><span class="spec-value">Retail</span></div>
+                                <div class="spec-row"><span class="spec-label">SIZE</span><span class="spec-value">2,100 sq. ft.</span></div>
+                                <div class="spec-row"><span class="spec-label">STATUS</span><span class="spec-value">Completed</span></div>
+                                <div class="spec-row"><span class="spec-label">YEAR</span><span class="spec-value">2025</span></div>
+                            </div>
+                            
+                            <a href="javascript:void(0)" class="btn-next-project" onclick="document.getElementById('retail-lumina').style.display='none'; document.getElementById('retail-aura').style.display='block'; window.scrollTo(0, 0);">VIEW NEXT PROJECT &rarr;</a>
+                        </div>
+                        <div class="project-gallery-col">
+                            <div class="gallery-grid">
+                                <div class="grid-main">
+                                    <img src="assets/retail.png" alt="Lumina Front">
+                                </div>
+                                <div class="grid-side">
+                                    <img src="assets/retail.png" alt="Lumina Interior">
+                                    <img src="assets/retail.png" alt="Lumina Display">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- CTA Section -->
+        <section id="contact" class="contact-section">
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h2>Initiate a Dialogue.</h2>
+                    <p>Let's define your next environment.</p>
+                    <div class="social-links">
+                        <a href="#">Instagram</a>
+                        <a href="#">LinkedIn</a>
+                        <a href="#">WhatsApp</a>
+                    </div>
+                </div>
+                <div class="contact-form-wrapper">
+                    <form class="minimal-form">
+                        <div class="form-group">
+                            <input type="text" id="name" placeholder="Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" placeholder="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" rows="4" placeholder="Message Details" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Profile</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Tugboat Urban Interiors. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

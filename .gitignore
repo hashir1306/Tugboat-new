@@ -1,0 +1,27 @@
+# Large zip archives
+*.zip
+
+# Unused videos
+TUGBOAT LOGO_INTRO.mp4
+Video1.mp4
+Video2.mp4
+scroll video.mp4
+scroll video1.mp4
+scroll video2.mp4
+
+# Unused frame sequence directories
+scroll/
+scroll1/
+scroll2/
+scroll3/
+
+# Unused images/documents
+TUGBOAT LOGO FINAL.pdf
+about2.png
+logo.png
+convert.py
+
+# Editor / System files
+.DS_Store
+.vscode/
+Thumbs.db
