@@ -170,13 +170,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (canvas && scrollSection) {
         const context = canvas.getContext('2d', { alpha: false });
-        const frameCount = 240;
+        const frameCount = 300;
         
         // Enhance images by increasing contrast, saturation, and slightly sharpening
         context.filter = 'contrast(1.15) saturate(1.2) brightness(1.05)';
 
         const currentFrame = index => (
-            `scroll3/ezgif-frame-${(index + 1).toString().padStart(3, '0')}.jpg`
+            `scroll4/ezgif-frame-${(index + 1).toString().padStart(3, '0')}.jpg`
         );
 
         // Preload images into memory
@@ -190,9 +190,24 @@ document.addEventListener('DOMContentLoaded', () => {
         // Draw first frame when loaded
         images[0].onload = function() {
             // Setting canvas resolution based on container size
+            let lastWidth = 0;
+            let lastHeight = 0;
             const updateCanvasSize = () => {
                 const container = canvas.parentElement;
                 const rect = container.getBoundingClientRect();
+                
+                // On mobile, height changes due to address bar toggling on scroll.
+                // We only resize if width changes or if there is a major height change (e.g. orientation change).
+                const widthChanged = Math.abs(rect.width - lastWidth) > 2;
+                const heightChanged = Math.abs(rect.height - lastHeight) > 100;
+                
+                if (!widthChanged && !heightChanged && lastWidth > 0) {
+                    return;
+                }
+                
+                lastWidth = rect.width;
+                lastHeight = rect.height;
+                
                 const dpr = window.devicePixelRatio || 1;
                 
                 canvas.width = rect.width * dpr;
@@ -202,6 +217,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Reapply filter after resize because context resets
                 context.filter = 'contrast(1.15) saturate(1.2) brightness(1.05)';
+                
+                // Reset transform matrix before scaling to prevent cumulative scale bugs
+                context.setTransform(1, 0, 0, 1, 0, 0);
                 context.scale(dpr, dpr);
                 
                 renderImage(images[Math.round(currentRenderedFrame)]);
@@ -219,23 +237,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const canvasCSSWidth = canvas.width / (window.devicePixelRatio || 1);
             const canvasCSSHeight = canvas.height / (window.devicePixelRatio || 1);
             
-            // On mobile (portrait-like or narrow screens), ensure the full width is visible (contain)
-            const isMobile = window.innerWidth <= 900;
-            
-            let scale;
-            if (isMobile) {
-                // object-fit: contain equivalent for mobile
-                scale = Math.min(
-                    canvasCSSWidth / imgElement.width,
-                    canvasCSSHeight / imgElement.height
-                );
-            } else {
-                // object-fit: cover equivalent for desktop
-                scale = Math.max(
-                    canvasCSSWidth / imgElement.width,
-                    canvasCSSHeight / imgElement.height
-                );
-            }
+            // Always cover the viewport (object-fit: cover equivalent)
+            const scale = Math.max(
+                canvasCSSWidth / imgElement.width,
+                canvasCSSHeight / imgElement.height
+            );
             
             const x = (canvasCSSWidth / 2) - (imgElement.width / 2) * scale;
             const y = (canvasCSSHeight / 2) - (imgElement.height / 2) * scale;
@@ -254,20 +260,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const viewportHeight = window.innerHeight;
             
             let scrollProgress = 0;
-            const isMobile = window.innerWidth <= 900;
             
-            if (isMobile) {
-                // On mobile, the section is not sticky, so animate as it passes through the viewport
-                const totalTravel = viewportHeight + sectionHeight;
-                const currentTravel = viewportHeight - sectionTop;
-                scrollProgress = currentTravel / totalTravel;
-            } else {
-                // On desktop, the section is sticky, so animate based on scroll distance past the top
-                if (sectionTop <= 0) {
-                    const maxScroll = sectionHeight - viewportHeight;
-                    // Prevent divide by zero if maxScroll is 0
-                    scrollProgress = maxScroll > 0 ? Math.abs(sectionTop) / maxScroll : 0;
-                }
+            // The section is sticky on all devices, so animate based on scroll distance past the top
+            if (sectionTop <= 0) {
+                const maxScroll = sectionHeight - viewportHeight;
+                // Prevent divide by zero if maxScroll is 0
+                scrollProgress = maxScroll > 0 ? Math.abs(sectionTop) / maxScroll : 0;
             }
 
             scrollProgress = Math.max(0, Math.min(1, scrollProgress));
