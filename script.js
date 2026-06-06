@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Navbar scroll effect
     const navbar = document.getElementById('navbar');
-    let lastScrollY = window.scrollY;
+    let scrollTimeout;
     
     window.addEventListener('scroll', () => {
         const currentScrollY = window.scrollY;
@@ -34,14 +34,21 @@ document.addEventListener('DOMContentLoaded', () => {
             navbar.classList.remove('scrolled');
         }
 
-        if (currentScrollY > lastScrollY && currentScrollY > 100) {
-            navbar.classList.add('hidden');
+        // Retrieve navLinks to check for mobile menu state
+        const navLinks = document.querySelector('.nav-links');
+        const isMobileMenuOpen = navLinks && navLinks.classList.contains('mobile-active');
+
+        if (!isMobileMenuOpen) {
+            navbar.classList.add('scrolling');
+            
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                navbar.classList.remove('scrolling');
+            }, 250);
         } else {
-            navbar.classList.remove('hidden');
+            navbar.classList.remove('scrolling');
         }
-        
-        lastScrollY = currentScrollY;
-    });
+    }, { passive: true });
 
     // Mobile Menu Initialization
     const navContainer = document.querySelector('.nav-container');

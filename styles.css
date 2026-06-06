@@ -113,11 +113,16 @@ body.loading {
     width: 100%;
     padding: 0.5rem 5%;
     z-index: 100;
-    transition: background-color 0.4s ease, padding 0.4s ease, transform 0.4s ease;
+    transition: background-color 0.4s ease, padding 0.4s ease, transform 0.4s ease, opacity 0.4s ease;
 }
 
 #navbar.hidden {
     transform: translateY(-100%);
+}
+
+#navbar.scrolling {
+    opacity: 0;
+    pointer-events: none;
 }
 
 #navbar.scrolled {
@@ -150,11 +155,20 @@ body.loading {
 .logo img {
     height: 80px;
     width: auto;
+    filter: contrast(1.2) brightness(1.05) saturate(1.05);
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.03);
 }
 
 .nav-links {
     display: flex;
-    gap: 3rem;
+    gap: 1.5rem;
+    align-items: center;
 }
 
 .nav-links a {
@@ -164,23 +178,19 @@ body.loading {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     position: relative;
-    padding-bottom: 4px;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid var(--text-color);
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    display: inline-block;
 }
 
-.nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 1px;
+.nav-links a:hover {
     background-color: var(--text-color);
-    transition: width 0.3s ease;
+    color: var(--bg-color);
 }
 
-.nav-links a:hover::after {
-    width: 100%;
-}
+
 
 .btn {
     text-decoration: none;
@@ -389,7 +399,7 @@ body.loading {
 
 /* Contact Section */
 .contact-section {
-    padding: var(--padding-section);
+    padding: 60px 5%;
     background-color: var(--accent);
     border-top: 1px solid var(--border-color);
 }
@@ -423,7 +433,7 @@ body.loading {
 }
 
 .minimal-form .form-group {
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .minimal-form input,
@@ -431,12 +441,18 @@ body.loading {
     width: 100%;
     background: transparent;
     border: none;
-    border-bottom: 1px solid var(--border-color);
-    padding: 1rem 0;
+    border-bottom: 1px solid var(--text-color);
+    padding: 0.8rem 0;
     color: var(--text-color);
     font-family: var(--font-primary);
     font-size: 1.1rem;
     transition: border-color 0.4s ease;
+}
+
+.minimal-form input::placeholder,
+.minimal-form textarea::placeholder {
+    color: var(--text-color);
+    opacity: 0.95;
 }
 
 .minimal-form input:focus,
@@ -451,8 +467,14 @@ body.loading {
 
 /* Footer */
 footer {
-    padding: 3rem 5%;
-    border-top: 1px solid var(--border-color);
+    padding: 1.5rem 5% 2rem;
+    border-top: none;
+    background-color: var(--accent);
+}
+
+.services-page footer {
+    background-color: #141312;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .footer-bottom {
@@ -522,6 +544,11 @@ footer {
         gap: 2rem;
     }
     
+    .nav-links a {
+        text-align: center;
+        width: 100%;
+    }
+    
     .nav-links.mobile-active {
         right: 0;
     }
@@ -581,8 +608,18 @@ footer {
     border-bottom: none;
 }
 
-.about-page .logo a, .about-page .nav-links a {
+.about-page .logo a {
     color: #f5f2eb;
+}
+
+.about-page .nav-links a {
+    color: #f5f2eb;
+    border-color: #f5f2eb;
+}
+
+.about-page .nav-links a:hover {
+    background-color: #f5f2eb;
+    color: #1a1816;
 }
 
 @media (max-width: 900px) {
@@ -594,14 +631,7 @@ footer {
     }
 }
 
-.about-page .nav-links a::after {
-    background-color: #f5f2eb;
-}
 
-.about-page .nav-links a.active {
-    color: #F0AA25;
-    border-bottom: 1px solid #F0AA25;
-}
 
 .about-page .btn-outline {
     border-color: #f5f2eb;
@@ -803,16 +833,21 @@ footer {
     background-color: transparent;
     border-bottom: none;
 }
-.contact-page .logo a, .contact-page .nav-links a {
+.contact-page .logo a {
     color: #f5f2eb;
 }
-.contact-page .nav-links a::after {
+
+.contact-page .nav-links a {
+    color: #f5f2eb;
+    border-color: #f5f2eb;
+}
+
+.contact-page .nav-links a:hover {
     background-color: #f5f2eb;
+    color: #1a1816;
 }
-.contact-page .nav-links a.active {
-    color: #F0AA25;
-    border-bottom: 1px solid #F0AA25;
-}
+
+
 .contact-page .btn-outline {
     border-color: #f5f2eb;
     color: #f5f2eb;
