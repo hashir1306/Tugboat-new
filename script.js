@@ -315,6 +315,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 const targetContent = document.getElementById(`tab-${tabId}`);
                 if (targetContent) {
                     targetContent.classList.add('active');
+                    
+                    // Reveal elements inside the active tab immediately
+                    targetContent.querySelectorAll('.reveal').forEach(el => {
+                        el.classList.add('active');
+                    });
+                }
+
+                // Smoothly scroll page so the tabs stick under the navbar
+                const subnavContainer = document.querySelector('.projects-subnav-container');
+                if (subnavContainer) {
+                    const isMobile = window.innerWidth <= 900;
+                    const offset = isMobile ? 50 : 90; // Height of the scrolled navbar
+                    
+                    const elementRect = subnavContainer.getBoundingClientRect().top;
+                    const absoluteElementTop = elementRect + window.scrollY;
+                    const scrollToPosition = absoluteElementTop - offset;
+
+                    window.scrollTo({
+                        top: scrollToPosition,
+                        behavior: 'smooth'
+                    });
                 }
             });
         });

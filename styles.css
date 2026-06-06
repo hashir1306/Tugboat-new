@@ -98,7 +98,7 @@ p {
 #video-preloader video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 body.loading {
@@ -188,6 +188,12 @@ body.loading {
 .nav-links a:hover {
     background-color: var(--text-color);
     color: var(--bg-color);
+}
+
+.nav-links a.active {
+    background-color: #000000;
+    color: #ffffff;
+    border-color: #000000;
 }
 
 
@@ -622,6 +628,12 @@ footer {
     color: #1a1816;
 }
 
+.about-page .nav-links a.active {
+    background-color: #000000;
+    color: #ffffff;
+    border-color: #000000;
+}
+
 @media (max-width: 900px) {
     .about-page .mobile-menu-btn {
         color: #f5f2eb;
@@ -845,6 +857,12 @@ footer {
 .contact-page .nav-links a:hover {
     background-color: #f5f2eb;
     color: #1a1816;
+}
+
+.contact-page .nav-links a.active {
+    background-color: #000000;
+    color: #ffffff;
+    border-color: #000000;
 }
 
 
@@ -1101,7 +1119,7 @@ footer {
     justify-content: space-between;
     align-items: stretch;
     gap: 3rem;
-    margin-bottom: 4rem;
+    margin-bottom: 6rem;
 }
 .footer-bottom-left {
     flex: 1;
@@ -1161,13 +1179,17 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 2rem;
+    padding-top: 1rem;
     border-top: 1px solid var(--border-color);
     color: var(--text-muted);
     font-size: 0.85rem;
 }
 .footer-logo img {
-    height: 40px;
+    height: 80px;
+    width: auto;
+    filter: contrast(1.25) brightness(1.15) saturate(1.05);
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
 }
 .footer-links a {
     color: var(--text-muted);
@@ -1219,6 +1241,15 @@ footer {
     .contact-hero-content {
         padding-top: 10rem;
     }
+    .footer-copyright {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
+        padding-top: 1.5rem;
+    }
+    .footer-logo img {
+        height: 55px;
+    }
 }
 
 /* Projects Page Styles */
@@ -1260,8 +1291,31 @@ footer {
     background-color: #e5dfd5;
     border-bottom: 1px solid #d0c8b8;
     position: sticky;
-    top: 90px;
+    top: 96px;
     z-index: 90;
+    transition: top 0.3s ease;
+}
+
+#navbar.scrolling ~ main .projects-subnav-container {
+    top: 0;
+}
+
+#navbar.scrolled:not(.scrolling) ~ main .projects-subnav-container {
+    top: 90px;
+}
+
+@media (max-width: 900px) {
+    .projects-subnav-container {
+        top: 56px;
+    }
+    
+    #navbar.scrolling ~ main .projects-subnav-container {
+        top: 0;
+    }
+
+    #navbar.scrolled:not(.scrolling) ~ main .projects-subnav-container {
+        top: 50px;
+    }
 }
 .projects-subnav {
     display: flex;
