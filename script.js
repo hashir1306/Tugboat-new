@@ -170,13 +170,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (canvas && scrollSection) {
         const context = canvas.getContext('2d', { alpha: false });
+        
+        // Use the scroll4 (300 frames) sequence for all viewport sizes (desktop and mobile)
         const frameCount = 300;
+        const imgFolder = 'scroll4';
+        
+        let targetFrame = 0;
+        let currentRenderedFrame = 0;
         
         // Enhance images by increasing contrast, saturation, and slightly sharpening
         context.filter = 'contrast(1.15) saturate(1.2) brightness(1.05)';
 
         const currentFrame = index => (
-            `scroll4/ezgif-frame-${(index + 1).toString().padStart(3, '0')}.jpg`
+            `${imgFolder}/ezgif-frame-${(index + 1).toString().padStart(3, '0')}.jpg`
         );
 
         // Preload images into memory
@@ -187,46 +193,56 @@ document.addEventListener('DOMContentLoaded', () => {
             images.push(img);
         }
 
-        // Draw first frame when loaded
-        images[0].onload = function() {
-            // Setting canvas resolution based on container size
-            let lastWidth = 0;
-            let lastHeight = 0;
-            const updateCanvasSize = () => {
-                const container = canvas.parentElement;
-                const rect = container.getBoundingClientRect();
-                
-                // On mobile, height changes due to address bar toggling on scroll.
-                // We only resize if width changes or if there is a major height change (e.g. orientation change).
-                const widthChanged = Math.abs(rect.width - lastWidth) > 2;
-                const heightChanged = Math.abs(rect.height - lastHeight) > 100;
-                
-                if (!widthChanged && !heightChanged && lastWidth > 0) {
-                    return;
-                }
-                
-                lastWidth = rect.width;
-                lastHeight = rect.height;
-                
-                const dpr = window.devicePixelRatio || 1;
-                
-                canvas.width = rect.width * dpr;
-                canvas.height = rect.height * dpr;
-                canvas.style.width = rect.width + 'px';
-                canvas.style.height = rect.height + 'px';
-                
-                // Reapply filter after resize because context resets
-                context.filter = 'contrast(1.15) saturate(1.2) brightness(1.05)';
-                
-                // Reset transform matrix before scaling to prevent cumulative scale bugs
-                context.setTransform(1, 0, 0, 1, 0, 0);
-                context.scale(dpr, dpr);
-                
-                renderImage(images[Math.round(currentRenderedFrame)]);
-            };
+        // Setting canvas resolution based on container size
+        let lastWidth = 0;
+        let lastHeight = 0;
+
+        const updateCanvasSize = () => {
+            const container = canvas.parentElement;
+            if (!container) return;
+            const rect = container.getBoundingClientRect();
             
-            window.addEventListener('resize', updateCanvasSize);
+            // On mobile, height changes due to address bar toggling on scroll.
+            // We only resize if width changes or if there is a major height change (e.g. orientation change / address bar toggling > 50px).
+            const widthChanged = Math.abs(rect.width - lastWidth) > 2;
+            const heightChanged = Math.abs(rect.height - lastHeight) > 50;
+            
+            if (!widthChanged && !heightChanged && lastWidth > 0) {
+                return;
+            }
+            
+            lastWidth = rect.width;
+            lastHeight = rect.height;
+            
+            const dpr = window.devicePixelRatio || 1;
+            
+            // Set internal backing store resolution
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            
+            // Reapply filter after resize because context resets
+            context.filter = 'contrast(1.15) saturate(1.2) brightness(1.05)';
+            
+            // Reset transform matrix before scaling to prevent cumulative scale bugs
+            context.setTransform(1, 0, 0, 1, 0, 0);
+            context.scale(dpr, dpr);
+            
+            // Draw current frame if available
+            const currentFrameImg = images[Math.round(currentRenderedFrame)];
+            if (currentFrameImg && currentFrameImg.complete && currentFrameImg.naturalWidth > 0) {
+                renderImage(currentFrameImg);
+            }
+        };
+
+        // Initialize size immediately
+        updateCanvasSize();
+        window.addEventListener('resize', updateCanvasSize);
+
+        // Draw first frame when loaded (or immediately if already cached)
+        if (images[0].complete) {
             updateCanvasSize();
+        } else {
+            images[0].onload = updateCanvasSize;
         }
 
         const renderImage = (imgElement) => {
@@ -249,10 +265,6 @@ document.addEventListener('DOMContentLoaded', () => {
             context.clearRect(0, 0, canvasCSSWidth, canvasCSSHeight);
             context.drawImage(imgElement, x, y, imgElement.width * scale, imgElement.height * scale);
         }
-
-        let targetFrame = 0;
-        let currentRenderedFrame = 0;
-
         window.addEventListener('scroll', () => {
             const rect = scrollSection.getBoundingClientRect();
             const sectionTop = rect.top;
