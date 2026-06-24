@@ -23,25 +23,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Navbar scroll effect
     const navbar = document.getElementById('navbar');
-    let lastScrollY = window.scrollY;
+    let isScrollingTimeout;
     
     window.addEventListener('scroll', () => {
         const currentScrollY = window.scrollY;
         
+        // Hide navbar immediately when scrolling starts/continues
+        navbar.classList.add('hidden');
+        
+        // Clear previous timeout
+        window.clearTimeout(isScrollingTimeout);
+        
+        // Show navbar after user stops scrolling (200ms debounce)
+        isScrollingTimeout = setTimeout(() => {
+            navbar.classList.remove('hidden');
+        }, 200);
+
         if (currentScrollY > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
-
-        if (currentScrollY > lastScrollY && currentScrollY > 100) {
-            navbar.classList.add('hidden');
-        } else {
-            navbar.classList.remove('hidden');
-        }
-        
-        lastScrollY = currentScrollY;
-    });
+    }, { passive: true });
 
     // Mobile Menu Initialization
     const navContainer = document.querySelector('.nav-container');
@@ -199,22 +202,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const renderImage = (imgElement) => {
             if (!imgElement || !imgElement.complete || imgElement.naturalWidth === 0) return;
             
-            const isMobile = window.innerWidth <= 900;
-            
-            let scale;
-            if (isMobile) {
-                // object-fit: contain equivalent for mobile to fit within screen
-                scale = Math.min(
-                    canvasCSSWidth / imgElement.width,
-                    canvasCSSHeight / imgElement.height
-                );
-            } else {
-                // object-fit: cover equivalent for desktop
-                scale = Math.max(
-                    canvasCSSWidth / imgElement.width,
-                    canvasCSSHeight / imgElement.height
-                );
-            }
+            // Use cover equivalent (object-fit: cover) for both desktop and mobile to fill the screen
+            const scale = Math.max(
+                canvasCSSWidth / imgElement.width,
+                canvasCSSHeight / imgElement.height
+            );
             
             const x = (canvasCSSWidth / 2) - (imgElement.width / 2) * scale;
             const y = (canvasCSSHeight / 2) - (imgElement.height / 2) * scale;
