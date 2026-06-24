@@ -163,61 +163,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (canvas && scrollSection) {
         const context = canvas.getContext('2d', { alpha: false });
-        const frameCount = 240;
         
-        // Enhance images by increasing contrast, saturation, and slightly sharpening
+        let config = null;
+        let images = [];
+        let isMobileDevice = window.innerWidth <= 900;
+        let targetFrame = 0;
+        let currentRenderedFrame = 0;
+        let lastDrawnFrameIndex = -1;
+        let canvasCSSWidth = 0;
+        let canvasCSSHeight = 0;
+
+        // Enhance images by increasing contrast, saturation, and slightly brightening
         context.filter = 'contrast(1.15) saturate(1.2) brightness(1.05)';
 
-        const currentFrame = index => (
-            `scroll3/ezgif-frame-${(index + 1).toString().padStart(3, '0')}.jpg`
-        );
-
-        // Preload images into memory
-        const images = [];
-        for (let i = 0; i < frameCount; i++) {
-            const img = new Image();
-            img.src = currentFrame(i);
-            images.push(img);
-        }
-
-        // Draw first frame when loaded
-        images[0].onload = function() {
-            // Setting canvas resolution based on container size
-            const updateCanvasSize = () => {
-                const container = canvas.parentElement;
-                const rect = container.getBoundingClientRect();
-                const dpr = window.devicePixelRatio || 1;
-                
-                canvas.width = rect.width * dpr;
-                canvas.height = rect.height * dpr;
-                canvas.style.width = rect.width + 'px';
-                canvas.style.height = rect.height + 'px';
-                
-                // Reapply filter after resize because context resets
-                context.filter = 'contrast(1.15) saturate(1.2) brightness(1.05)';
-                context.scale(dpr, dpr);
-                
-                renderImage(images[Math.round(currentRenderedFrame)]);
-            };
-            
-            window.addEventListener('resize', updateCanvasSize);
-            updateCanvasSize();
-        }
+        const getSequenceConfig = (isMobile) => {
+            if (isMobile) {
+                return {
+                    folder: 'vid portrait',
+                    prefix: 'video1',
+                    totalFrames: 1864,
+                    step: 1863 / 299,
+                    frameCount: 300
+                };
+            } else {
+                return {
+                    folder: 'horizontal',
+                    prefix: 'vid',
+                    totalFrames: 1800,
+                    step: 1799 / 299,
+                    frameCount: 300
+                };
+            }
+        };
 
         const renderImage = (imgElement) => {
             if (!imgElement || !imgElement.complete || imgElement.naturalWidth === 0) return;
             
-            // Calculate scale to cover canvas (like object-fit: cover)
-            // Use CSS pixel dimensions for calculating scale
-            const canvasCSSWidth = canvas.width / (window.devicePixelRatio || 1);
-            const canvasCSSHeight = canvas.height / (window.devicePixelRatio || 1);
-            
-            // On mobile (portrait-like or narrow screens), ensure the full width is visible (contain)
             const isMobile = window.innerWidth <= 900;
             
             let scale;
             if (isMobile) {
-                // object-fit: contain equivalent for mobile
+                // object-fit: contain equivalent for mobile to fit within screen
                 scale = Math.min(
                     canvasCSSWidth / imgElement.width,
                     canvasCSSHeight / imgElement.height
@@ -235,52 +221,129 @@ document.addEventListener('DOMContentLoaded', () => {
             
             context.clearRect(0, 0, canvasCSSWidth, canvasCSSHeight);
             context.drawImage(imgElement, x, y, imgElement.width * scale, imgElement.height * scale);
-        }
+        };
 
-        let targetFrame = 0;
-        let currentRenderedFrame = 0;
+        const loadSequence = () => {
+            images = [];
+            config = getSequenceConfig(isMobileDevice);
+            lastDrawnFrameIndex = -1;
+            
+            for (let i = 0; i < config.frameCount; i++) {
+                const img = new Image();
+                const frameNum = Math.round(i * config.step) + 1;
+                img.src = `${config.folder}/${config.prefix} (${frameNum}).jpg`;
+                images.push(img);
+            }
+            
+            // Draw first frame when loaded
+            if (images[0]) {
+                images[0].onload = function() {
+                    if (Math.round(currentRenderedFrame) === 0) {
+                        renderImage(images[0]);
+                        lastDrawnFrameIndex = 0;
+                    }
+                };
+            }
+        };
+
+        const updateCanvasSize = () => {
+            const container = canvas.parentElement;
+            if (!container) return;
+            const rect = container.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            
+            canvasCSSWidth = rect.width;
+            canvasCSSHeight = rect.height;
+
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            
+            context.setTransform(dpr, 0, 0, dpr, 0, 0); // Explicitly reset transform matrix and apply scale
+            context.filter = 'contrast(1.15) saturate(1.2) brightness(1.05)';
+            
+            // Force redraw of current frame
+            const frameIndex = Math.round(currentRenderedFrame);
+            if (images[frameIndex] && images[frameIndex].complete && images[frameIndex].naturalWidth !== 0) {
+                renderImage(images[frameIndex]);
+                lastDrawnFrameIndex = frameIndex;
+            } else {
+                drawNearestLoaded(frameIndex);
+            }
+        };
+
+        const drawNearestLoaded = (frameIndex) => {
+            let closestDist = Infinity;
+            let closestIndex = -1;
+            for (let k = 0; k < images.length; k++) {
+                if (images[k] && images[k].complete && images[k].naturalWidth !== 0) {
+                    const dist = Math.abs(k - frameIndex);
+                    if (dist < closestDist) {
+                        closestDist = dist;
+                        closestIndex = k;
+                    }
+                }
+            }
+            if (closestIndex !== -1) {
+                renderImage(images[closestIndex]);
+                lastDrawnFrameIndex = closestIndex;
+            }
+        };
+
+        const handleResize = () => {
+            const newIsMobile = window.innerWidth <= 900;
+            if (newIsMobile !== isMobileDevice) {
+                isMobileDevice = newIsMobile;
+                loadSequence();
+            }
+            updateCanvasSize();
+        };
+
+        // Initialize sequence
+        loadSequence();
+        window.addEventListener('resize', handleResize);
+        updateCanvasSize();
 
         window.addEventListener('scroll', () => {
+            if (!config) return;
             const rect = scrollSection.getBoundingClientRect();
             const sectionTop = rect.top;
             const sectionHeight = rect.height;
             const viewportHeight = window.innerHeight;
             
             let scrollProgress = 0;
-            const isMobile = window.innerWidth <= 900;
             
-            if (isMobile) {
-                // On mobile, the section is not sticky, so animate as it passes through the viewport
-                const totalTravel = viewportHeight + sectionHeight;
-                const currentTravel = viewportHeight - sectionTop;
-                scrollProgress = currentTravel / totalTravel;
-            } else {
-                // On desktop, the section is sticky, so animate based on scroll distance past the top
-                if (sectionTop <= 0) {
-                    const maxScroll = sectionHeight - viewportHeight;
-                    // Prevent divide by zero if maxScroll is 0
-                    scrollProgress = maxScroll > 0 ? Math.abs(sectionTop) / maxScroll : 0;
-                }
+            if (sectionTop <= 0) {
+                const maxScroll = sectionHeight - viewportHeight;
+                scrollProgress = maxScroll > 0 ? Math.abs(sectionTop) / maxScroll : 0;
             }
 
             scrollProgress = Math.max(0, Math.min(1, scrollProgress));
-            targetFrame = Math.floor(scrollProgress * (frameCount - 1));
+            targetFrame = Math.floor(scrollProgress * (config.frameCount - 1));
         }, { passive: true });
 
         const renderLoop = () => {
-            if (currentRenderedFrame !== targetFrame) {
+            if (config) {
                 // Smooth interpolation between frames
                 const diff = targetFrame - currentRenderedFrame;
                 
-                if (Math.abs(diff) < 0.5) {
+                if (Math.abs(diff) < 0.1) {
                     currentRenderedFrame = targetFrame;
                 } else {
-                    currentRenderedFrame += diff * 0.15; // Smoothness factor
+                    currentRenderedFrame += diff * 0.05; // Smoothness factor
                 }
                 
                 const frameIndex = Math.round(currentRenderedFrame);
-                if (images[frameIndex]) {
-                    renderImage(images[frameIndex]);
+                if (frameIndex !== lastDrawnFrameIndex && images[frameIndex]) {
+                    const img = images[frameIndex];
+                    if (img.complete && img.naturalWidth !== 0) {
+                        renderImage(img);
+                        lastDrawnFrameIndex = frameIndex;
+                    } else {
+                        // Fallback to nearest loaded frame
+                        drawNearestLoaded(frameIndex);
+                    }
                 }
             }
             requestAnimationFrame(renderLoop);

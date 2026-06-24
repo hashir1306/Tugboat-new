@@ -283,7 +283,7 @@ body.loading {
 /* Scroll Sequence */
 .scroll-sequence-section {
     position: relative;
-    height: 200vh;
+    height: 600vh;
     background-color: var(--bg-color);
 }
 
@@ -558,17 +558,7 @@ footer {
         grid-template-columns: 1fr;
     }
     
-    .scroll-sequence-section {
-        height: auto;
-        background-color: transparent;
-    }
 
-    .canvas-container {
-        position: relative;
-        width: 100vw;
-        height: 56.25vw; /* 16:9 aspect ratio */
-        top: 0;
-    }
     
     .gallery-track img {
         height: 50vh;
