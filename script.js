@@ -429,53 +429,64 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Gmail Compose Form Handler — Contact Page Form
-    const contactForm = document.querySelector('.contact-full-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const name = contactForm.querySelector('input[placeholder="Your Name"]')?.value || '';
-            const email = contactForm.querySelector('input[placeholder="Email Address"]')?.value || '';
-            const phone = contactForm.querySelector('input[placeholder="Phone Number"]')?.value || '';
-            const projectType = contactForm.querySelector('select')?.value || '';
-            const message = contactForm.querySelector('textarea')?.value || '';
-
-            const subject = `New Project Inquiry from ${name} — ${projectType || 'General'}`;
-            const body = `Hello Tugboat Interiors,\n\nI would like to inquire about a project.\n\n` +
-                `Name: ${name}\n` +
-                `Email: ${email}\n` +
-                `Phone: ${phone}\n` +
-                `Project Type: ${projectType || 'Not specified'}\n\n` +
-                `Project Details:\n${message}\n\n` +
-                `Looking forward to hearing from you.\n\nBest regards,\n${name}`;
-
-            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=info@tugboatinteriors.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.open(gmailUrl, '_blank');
-        });
+    // Toast Notification System
+    function showToast(title, message) {
+        let toastContainer = document.querySelector('.toast-container');
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.className = 'toast-container';
+            document.body.appendChild(toastContainer);
+        }
+        
+        const toast = document.createElement('div');
+        toast.className = 'toast reveal fade-bottom active';
+        toast.innerHTML = `
+            <div class="toast-content">
+                <h4>${title}</h4>
+                <p>${message}</p>
+            </div>
+            <button class="toast-close">&times;</button>
+        `;
+        
+        toastContainer.appendChild(toast);
+        
+        const closeBtn = toast.querySelector('.toast-close');
+        closeBtn.addEventListener('click', () => toast.remove());
+        
+        setTimeout(() => {
+            toast.classList.add('fade-out');
+            setTimeout(() => toast.remove(), 300);
+        }, 5000);
     }
 
-    // Gmail Compose Form Handler — Index Page Form
-    const indexForm = document.querySelector('.minimal-form');
-    if (indexForm) {
-        indexForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+    // FormSubmit Handlers for Contact and Index/Projects Pages
+    const submitForms = document.querySelectorAll('form[target="hidden-iframe"]');
+    if (submitForms.length > 0) {
+        submitForms.forEach(form => {
+            form.addEventListener('submit', (e) => {
+                // Let the native submit action happen to target the background hidden-iframe
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                
+                // Change button state to sending
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = 'SENDING...';
 
-            const name = indexForm.querySelector('#name')?.value || '';
-            const email = indexForm.querySelector('#email')?.value || '';
-            const inquiry = indexForm.querySelector('#inquiry')?.value || '';
-            const message = indexForm.querySelector('#message')?.value || '';
+                // Get name for personalized message if available
+                let name = form.querySelector('input[name="Name"]')?.value || 'there';
 
-            const subject = `New Inquiry from ${name} — ${inquiry || 'General'}`;
-            const body = `Hello Tugboat Interiors,\n\n` +
-                `Name: ${name}\n` +
-                `Email: ${email}\n` +
-                `Project Type: ${inquiry || 'Not specified'}\n\n` +
-                `Message:\n${message}\n\n` +
-                `Best regards,\n${name}`;
+                // After submission completes in the background iframe, restore UI, reset form, and display success toast
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                    form.reset();
 
-            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=info@tugboatinteriors.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.open(gmailUrl, '_blank');
+                    showToast(
+                        "Profile Submitted",
+                        `Thank you, ${name}. Your request has been sent! Check your inbox/spam for a quick verification from FormSubmit if this is the first submission.`
+                    );
+                }, 1800);
+            });
         });
     }
 });

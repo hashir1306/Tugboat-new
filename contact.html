@@ -100,16 +100,19 @@
                 <div class="orange-label">TELL US ABOUT YOUR PROJECT</div>
                 <h2 class="about-title" style="font-size: 2.5rem; margin-bottom: 2rem;">We're here to bring<br>your
                     vision to life.</h2>
-                <form class="contact-full-form">
+                <iframe name="hidden-iframe" style="display: none;"></iframe>
+                <form class="contact-full-form" action="https://formsubmit.co/hashir3.munda@gmail.com" method="POST" target="hidden-iframe">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_subject" value="New Profile Submission - Contact Page">
                     <div class="form-row">
-                        <input type="text" placeholder="Your Name" required>
-                        <input type="email" placeholder="Email Address" required>
+                        <input type="text" name="Name" placeholder="Your Name" required>
+                        <input type="email" name="Email" placeholder="Email Address" required>
                     </div>
                     <div class="form-row">
-                        <input type="tel" placeholder="Phone Number" required>
+                        <input type="tel" name="Phone" placeholder="Phone Number" required>
                     </div>
                     <div class="form-row">
-                        <select required>
+                        <select name="Project Type" required>
                             <option value="" disabled selected>Project Type</option>
                             <option value="residential">Residential</option>
                             <option value="commercial">Commercial</option>
@@ -117,7 +120,7 @@
                         </select>
                     </div>
                     <div class="form-row">
-                        <textarea placeholder="Tell us about your project" rows="5" required></textarea>
+                        <textarea name="Message" placeholder="Tell us about your project" rows="5" required></textarea>
                     </div>
                     <button type="submit" class="btn-submit">SEND MESSAGE &rarr;</button>
                     <div class="secure-info">
