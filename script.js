@@ -176,25 +176,22 @@ document.addEventListener('DOMContentLoaded', () => {
         let canvasCSSWidth = 0;
         let canvasCSSHeight = 0;
 
-        // Enhance images by increasing contrast, saturation, and slightly brightening
-        context.filter = 'contrast(1.15) saturate(1.2) brightness(1.05)';
-
         const getSequenceConfig = (isMobile) => {
             if (isMobile) {
                 return {
-                    folder: 'vid portrait',
-                    prefix: 'video1',
-                    totalFrames: 1864,
-                    step: 1863 / 299,
-                    frameCount: 300
+                    folder: 'frames',
+                    totalFrames: 2313,
+                    step: 2312 / 299,
+                    frameCount: 300,
+                    getFilename: (frameNum) => `frames/frame_${String(frameNum).padStart(4, '0')}.webp`
                 };
             } else {
                 return {
-                    folder: 'horizontal',
-                    prefix: 'vid',
-                    totalFrames: 1800,
-                    step: 1799 / 299,
-                    frameCount: 300
+                    folder: 'frames',
+                    totalFrames: 2313,
+                    step: 2312 / 299,
+                    frameCount: 300,
+                    getFilename: (frameNum) => `frames/frame_${String(frameNum).padStart(4, '0')}.webp`
                 };
             }
         };
@@ -223,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
             for (let i = 0; i < config.frameCount; i++) {
                 const img = new Image();
                 const frameNum = Math.round(i * config.step) + 1;
-                img.src = `${config.folder}/${config.prefix} (${frameNum}).jpg`;
+                img.src = config.getFilename(frameNum);
                 images.push(img);
             }
             
@@ -253,7 +250,6 @@ document.addEventListener('DOMContentLoaded', () => {
             canvas.style.height = rect.height + 'px';
             
             context.setTransform(dpr, 0, 0, dpr, 0, 0); // Explicitly reset transform matrix and apply scale
-            context.filter = 'contrast(1.15) saturate(1.2) brightness(1.05)';
             
             // Force redraw of current frame
             const frameIndex = Math.round(currentRenderedFrame);
@@ -311,8 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 scrollProgress = maxScroll > 0 ? Math.abs(sectionTop) / maxScroll : 0;
             }
 
-            scrollProgress = Math.max(0, Math.min(1, scrollProgress));
-            targetFrame = Math.floor(scrollProgress * (config.frameCount - 1));
+            targetFrame = Math.max(0, Math.min(config.frameCount - 1, scrollProgress * (config.frameCount - 1)));
         }, { passive: true });
 
         const renderLoop = () => {
@@ -323,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (Math.abs(diff) < 0.1) {
                     currentRenderedFrame = targetFrame;
                 } else {
-                    currentRenderedFrame += diff * 0.05; // Smoothness factor
+                    currentRenderedFrame += diff * 0.04; // Smoothness factor
                 }
                 
                 const frameIndex = Math.round(currentRenderedFrame);
@@ -365,6 +360,90 @@ document.addEventListener('DOMContentLoaded', () => {
                     targetContent.classList.add('active');
                 }
             });
+        });
+    }
+
+    // Map Modal logic for Contact Page
+    const viewMapBtns = document.querySelectorAll('.view-map');
+    const mapModal = document.getElementById('map-modal');
+    
+    if (viewMapBtns.length > 0 && mapModal) {
+        const closeBtn = mapModal.querySelector('.map-modal-close');
+        const overlay = mapModal.querySelector('.map-modal-overlay');
+
+        const openModal = (e) => {
+            e.preventDefault();
+            mapModal.classList.add('active');
+            document.body.classList.add('modal-open');
+        };
+
+        const closeModal = () => {
+            mapModal.classList.remove('active');
+            document.body.classList.remove('modal-open');
+        };
+
+        viewMapBtns.forEach(btn => {
+            btn.addEventListener('click', openModal);
+        });
+        
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+        if (overlay) overlay.addEventListener('click', closeModal);
+
+        // Close on Escape key press
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mapModal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+    }
+
+    // Gmail Compose Form Handler — Contact Page Form
+    const contactForm = document.querySelector('.contact-full-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = contactForm.querySelector('input[placeholder="Your Name"]')?.value || '';
+            const email = contactForm.querySelector('input[placeholder="Email Address"]')?.value || '';
+            const phone = contactForm.querySelector('input[placeholder="Phone Number"]')?.value || '';
+            const projectType = contactForm.querySelector('select')?.value || '';
+            const message = contactForm.querySelector('textarea')?.value || '';
+
+            const subject = `New Project Inquiry from ${name} — ${projectType || 'General'}`;
+            const body = `Hello Tugboat Interiors,\n\nI would like to inquire about a project.\n\n` +
+                `Name: ${name}\n` +
+                `Email: ${email}\n` +
+                `Phone: ${phone}\n` +
+                `Project Type: ${projectType || 'Not specified'}\n\n` +
+                `Project Details:\n${message}\n\n` +
+                `Looking forward to hearing from you.\n\nBest regards,\n${name}`;
+
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=info@tugboatinteriors.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.open(gmailUrl, '_blank');
+        });
+    }
+
+    // Gmail Compose Form Handler — Index Page Form
+    const indexForm = document.querySelector('.minimal-form');
+    if (indexForm) {
+        indexForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = indexForm.querySelector('#name')?.value || '';
+            const email = indexForm.querySelector('#email')?.value || '';
+            const inquiry = indexForm.querySelector('#inquiry')?.value || '';
+            const message = indexForm.querySelector('#message')?.value || '';
+
+            const subject = `New Inquiry from ${name} — ${inquiry || 'General'}`;
+            const body = `Hello Tugboat Interiors,\n\n` +
+                `Name: ${name}\n` +
+                `Email: ${email}\n` +
+                `Project Type: ${inquiry || 'Not specified'}\n\n` +
+                `Message:\n${message}\n\n` +
+                `Best regards,\n${name}`;
+
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=info@tugboatinteriors.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.open(gmailUrl, '_blank');
         });
     }
 });
