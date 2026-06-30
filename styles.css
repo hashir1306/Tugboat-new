@@ -2159,33 +2159,48 @@ body.modal-open {
    About Page – Tagline Banner
    ========================================================================== */
 
-/* ---------- Hero & Who-We-Are (layout helpers) ---------- */
+/* ---------- Hero & Who-We-Are (overlay layout) ---------- */
 .about-hero,
 .about-who {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    position: relative;
+    display: flex;
     min-height: 80vh;
+    overflow: hidden;
 }
 
 .about-hero-content,
 .about-who-content {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 80px 5%;
-    background: #1a1a1a;
+    padding: 120px 8% 80px;
     color: #fff;
+    width: 100%;
+    background: linear-gradient(to right, rgba(20, 20, 20, 0.92) 0%, rgba(20, 20, 20, 0.75) 40%, rgba(20, 20, 20, 0.3) 70%, transparent 100%);
 }
 
 .about-hero-content p,
 .about-who-content p {
-    color: #aaa;
+    color: #b5a18a;
+    max-width: 550px;
 }
 
 .about-title {
     font-size: clamp(2rem, 5vw, 4.5rem);
     margin-bottom: 1.5rem;
     color: #fff;
+}
+
+.about-hero-image,
+.about-who-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
 }
 
 .about-hero-image img,
@@ -2305,13 +2320,13 @@ body.modal-open {
 
     .about-hero,
     .about-who {
-        grid-template-columns: 1fr;
+        min-height: 70vh;
     }
 
-    .about-hero-image,
-    .about-who-image {
-        max-height: 400px;
-        overflow: hidden;
+    .about-hero-content,
+    .about-who-content {
+        padding: 120px 6% 60px;
+        background: linear-gradient(to bottom, rgba(20, 20, 20, 0.9) 0%, rgba(20, 20, 20, 0.7) 60%, rgba(20, 20, 20, 0.4) 100%);
     }
 
     .tagline-row {
