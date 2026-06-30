@@ -635,9 +635,6 @@ footer {
     min-height: 100dvh;
 }
 
-.about-who {
-    min-height: 80vh;
-}
 
 @media (max-width: 900px) {
     .dark-panel {
@@ -2164,7 +2161,8 @@ body.modal-open {
 .about-who {
     position: relative;
     display: flex;
-    min-height: 80vh;
+    min-height: 100vh;
+    min-height: 100dvh;
     overflow: hidden;
 }
 
@@ -2320,7 +2318,8 @@ body.modal-open {
 
     .about-hero,
     .about-who {
-        min-height: 70vh;
+        min-height: 100vh;
+        min-height: 100dvh;
     }
 
     .about-hero-content,
