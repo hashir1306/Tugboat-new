@@ -1441,6 +1441,11 @@ body.modal-open {
     position: sticky;
     top: 90px;
     z-index: 90;
+    transition: top 0.3s ease;
+}
+
+body.nav-hidden .projects-subnav-container {
+    top: 0;
 }
 
 .projects-subnav {

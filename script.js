@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Hide navbar immediately when scrolling starts/continues
         navbar.classList.add('hidden');
+        document.body.classList.add('nav-hidden');
         
         // Clear previous timeout
         window.clearTimeout(isScrollingTimeout);
@@ -37,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Show navbar after user stops scrolling (200ms debounce)
         isScrollingTimeout = setTimeout(() => {
             navbar.classList.remove('hidden');
+            document.body.classList.remove('nav-hidden');
         }, 200);
 
         if (currentScrollY > 50) {
