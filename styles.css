@@ -2358,6 +2358,11 @@ body.modal-open {
     height: 100vh; 
     overflow: hidden;
     background-color: var(--bg-color);
+    cursor: pointer;
+}
+
+.apartment-video-section.paused .video-btn {
+    opacity: 1;
 }
 
 .apartment-video-section video {

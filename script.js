@@ -160,6 +160,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Apartment Video play/pause functionality
+    const apartmentSection = document.getElementById('apartment-video-section');
+    const apartmentDesktopVideo = document.getElementById('apartment-desktop-video');
+    const apartmentMobileVideo = document.getElementById('apartment-mobile-video');
+    const apartmentPlayIcon = document.getElementById('apartment-play-icon');
+    const apartmentPauseIcon = document.getElementById('apartment-pause-icon');
+
+    if (apartmentSection && apartmentDesktopVideo && apartmentMobileVideo) {
+        apartmentSection.addEventListener('click', () => {
+            // Determine which video is currently active (desktop or mobile)
+            const isMobile = window.innerWidth <= 900;
+            const activeVideo = isMobile ? apartmentMobileVideo : apartmentDesktopVideo;
+            const inactiveVideo = isMobile ? apartmentDesktopVideo : apartmentMobileVideo;
+
+            if (activeVideo.paused) {
+                activeVideo.play();
+                inactiveVideo.play(); // Keep them in sync just in case
+                apartmentSection.classList.remove('paused');
+                apartmentPlayIcon.style.display = 'none';
+                apartmentPauseIcon.style.display = 'block';
+            } else {
+                activeVideo.pause();
+                inactiveVideo.pause();
+                apartmentSection.classList.add('paused');
+                apartmentPlayIcon.style.display = 'block';
+                apartmentPauseIcon.style.display = 'none';
+            }
+        });
+    }
+
     // Scroll Image Sequence Animation
     const canvas = document.getElementById('scroll-canvas');
     const scrollSection = document.getElementById('scroll-sequence');

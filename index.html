@@ -72,12 +72,22 @@
 
         <!-- Apartment Video Section -->
         <section id="apartment-video-section" class="apartment-video-section">
-            <video class="desktop-video" autoplay muted loop playsinline>
+            <video class="desktop-video" id="apartment-desktop-video" autoplay muted loop playsinline>
                 <source src="apartment.mp4" type="video/mp4">
             </video>
-            <video class="mobile-video" autoplay muted loop playsinline>
+            <video class="mobile-video" id="apartment-mobile-video" autoplay muted loop playsinline>
                 <source src="apartment_mobile.mp4" type="video/mp4">
             </video>
+            <div id="apartment-video-btn" class="video-btn">
+                <!-- Pause Icon (default) -->
+                <svg id="apartment-pause-icon" viewBox="0 0 24 24" width="32" height="32">
+                    <path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                </svg>
+                <!-- Play Icon -->
+                <svg id="apartment-play-icon" style="display: none;" viewBox="0 0 24 24" width="32" height="32">
+                    <path fill="currentColor" d="M8 5v14l11-7z" />
+                </svg>
+            </div>
         </section>
 
 
