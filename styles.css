@@ -2440,3 +2440,120 @@ body.nav-hidden .projects-subnav-container {
     opacity: 0;
     transform: translateY(20px);
 }
+
+/* ===================== SUCCESS TOAST NOTIFICATION ===================== */
+.success-toast {
+    position: fixed;
+    bottom: 2rem;
+    right: -500px;
+    z-index: 10000;
+    min-width: 380px;
+    max-width: 480px;
+    background: #1a1714;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(200, 149, 108, 0.15);
+    overflow: hidden;
+    transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.success-toast.show {
+    right: 2rem;
+}
+
+.success-toast.hiding {
+    right: -500px;
+    transition: right 0.4s cubic-bezier(0.5, 0, 0.75, 0);
+}
+
+.toast-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 1.25rem 1.5rem;
+}
+
+.toast-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    background: rgba(200, 149, 108, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+}
+
+.toast-text {
+    flex: 1;
+}
+
+.toast-text h4 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #e8d5c0;
+    margin: 0 0 6px 0;
+}
+
+.toast-text p {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    font-size: 0.85rem;
+    color: #b5a18a;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.toast-close {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: #b5a18a;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.toast-close:hover {
+    color: #e8d5c0;
+    transform: scale(1.15);
+}
+
+.toast-progress {
+    height: 3px;
+    background: linear-gradient(90deg, #c8956c, #e0b98a);
+    width: 100%;
+    transform-origin: left;
+    transform: scaleX(0);
+}
+
+.success-toast.show .toast-progress {
+    animation: toastProgress 8s linear forwards;
+}
+
+@keyframes toastProgress {
+    from {
+        transform: scaleX(1);
+    }
+    to {
+        transform: scaleX(0);
+    }
+}
+
+@media (max-width: 520px) {
+    .success-toast {
+        min-width: auto;
+        max-width: calc(100vw - 2rem);
+        left: 1rem;
+        right: -100vw;
+    }
+    .success-toast.show {
+        right: 1rem;
+    }
+    .success-toast.hiding {
+        right: -100vw;
+    }
+}

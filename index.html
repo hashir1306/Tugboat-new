@@ -121,27 +121,98 @@
                     </div>
                 </div>
                 <div class="contact-form-wrapper">
-                    <iframe name="hidden-iframe" style="display: none;"></iframe>
-                    <form class="minimal-form" action="https://formsubmit.co/hashir3.munda@gmail.com" method="POST" target="hidden-iframe">
-                        <input type="hidden" name="_captcha" value="false">
-                        <input type="hidden" name="_subject" value="New Profile Submission - Tugboat Interiors">
+                    <form id="home-contact-form" class="minimal-form" onsubmit="return sendHomeMailto(event)">
                         <div class="form-group">
-                            <input type="text" id="name" name="Name" placeholder="Name" required>
+                            <input type="text" id="home-name" name="Name" placeholder="Name" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" id="email" name="Email" placeholder="Email" required>
+                            <input type="email" id="home-email" name="Email" placeholder="Email" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" id="inquiry" name="Project Type" placeholder="Project Type (Residential, Commercial...)">
+                            <input type="text" id="home-inquiry" name="Project Type" placeholder="Project Type (Residential, Commercial...)">
                         </div>
                         <div class="form-group">
-                            <textarea id="message" name="Message" rows="4" placeholder="Message Details" required></textarea>
+                            <textarea id="home-message" name="Message" rows="4" placeholder="Message Details" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit Profile</button>
                     </form>
                 </div>
             </div>
         </section>
+
+        <!-- Success Toast Notification -->
+        <div id="success-toast" class="success-toast">
+            <div class="toast-content">
+                <div class="toast-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8956c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </div>
+                <div class="toast-text">
+                    <h4>Message Sent Successfully</h4>
+                    <p id="toast-message">Thank you! Your request has been sent.</p>
+                </div>
+                <button class="toast-close" onclick="closeToast()">&times;</button>
+            </div>
+            <div class="toast-progress"></div>
+        </div>
+
+        <script>
+        function sendHomeMailto(e) {
+            e.preventDefault();
+
+            var name = document.getElementById('home-name').value;
+            var email = document.getElementById('home-email').value;
+            var inquiry = document.getElementById('home-inquiry').value || 'Not specified';
+            var message = document.getElementById('home-message').value;
+
+            var recipient = 'info@tugboatinteriors.com';
+            var subject = 'New Project Inquiry - ' + inquiry;
+
+            var body = 'Hello Tugboat Urban Interiors,\n\n'
+                + 'I would like to inquire about your interior design services.\n\n'
+                + '--- Contact Details ---\n'
+                + 'Name: ' + name + '\n'
+                + 'Email: ' + email + '\n'
+                + 'Project Type: ' + inquiry + '\n\n'
+                + '--- Message ---\n'
+                + message + '\n\n'
+                + 'Looking forward to hearing from you.\n'
+                + 'Best regards,\n'
+                + name;
+
+            var gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1'
+                + '&to=' + encodeURIComponent(recipient)
+                + '&su=' + encodeURIComponent(subject)
+                + '&body=' + encodeURIComponent(body);
+
+            window.open(gmailUrl, '_blank');
+
+            var toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = 'Thank you, ' + name + '. Your request has been sent! Please complete sending the email in the Gmail tab that just opened.';
+            showToast();
+
+            document.getElementById('home-contact-form').reset();
+            return false;
+        }
+
+        function showToast() {
+            var toast = document.getElementById('success-toast');
+            toast.classList.remove('hiding');
+            toast.classList.add('show');
+            clearTimeout(window.toastTimer);
+            window.toastTimer = setTimeout(function() { closeToast(); }, 8000);
+        }
+
+        function closeToast() {
+            var toast = document.getElementById('success-toast');
+            toast.classList.remove('show');
+            toast.classList.add('hiding');
+            setTimeout(function() { toast.classList.remove('hiding'); }, 400);
+            clearTimeout(window.toastTimer);
+        }
+        </script>
     </main>
 
     <footer>

@@ -100,19 +100,16 @@
                 <div class="orange-label">TELL US ABOUT YOUR PROJECT</div>
                 <h2 class="about-title" style="font-size: 2.5rem; margin-bottom: 2rem;">We're here to bring<br>your
                     vision to life.</h2>
-                <iframe name="hidden-iframe" style="display: none;"></iframe>
-                <form class="contact-full-form" action="https://formsubmit.co/hashir3.munda@gmail.com" method="POST" target="hidden-iframe">
-                    <input type="hidden" name="_captcha" value="false">
-                    <input type="hidden" name="_subject" value="New Profile Submission - Contact Page">
+                <form id="contact-form" class="contact-full-form" onsubmit="return sendMailto(event)">
                     <div class="form-row">
-                        <input type="text" name="Name" placeholder="Your Name" required>
-                        <input type="email" name="Email" placeholder="Email Address" required>
+                        <input type="text" id="contact-name" name="Name" placeholder="Your Name" required>
+                        <input type="email" id="contact-email" name="Email" placeholder="Email Address" required>
                     </div>
                     <div class="form-row">
-                        <input type="tel" name="Phone" placeholder="Phone Number" required>
+                        <input type="tel" id="contact-phone" name="Phone" placeholder="Phone Number" required>
                     </div>
                     <div class="form-row">
-                        <select name="Project Type" required>
+                        <select id="contact-project" name="Project Type" required>
                             <option value="" disabled selected>Project Type</option>
                             <option value="residential">Residential</option>
                             <option value="commercial">Commercial</option>
@@ -120,7 +117,7 @@
                         </select>
                     </div>
                     <div class="form-row">
-                        <textarea name="Message" placeholder="Tell us about your project" rows="5" required></textarea>
+                        <textarea id="contact-message" name="Message" placeholder="Tell us about your project" rows="5" required></textarea>
                     </div>
                     <button type="submit" class="btn-submit">SEND MESSAGE &rarr;</button>
                     <div class="secure-info">
@@ -131,6 +128,91 @@
                         <span>Your information is secure and confidential.</span>
                     </div>
                 </form>
+
+                <!-- Success Toast Notification -->
+                <div id="success-toast" class="success-toast">
+                    <div class="toast-content">
+                        <div class="toast-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8956c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        <div class="toast-text">
+                            <h4>Message Sent Successfully</h4>
+                            <p id="toast-message">Thank you! Your request has been sent. Please complete sending the email in the Gmail tab that just opened.</p>
+                        </div>
+                        <button class="toast-close" onclick="closeToast()">&times;</button>
+                    </div>
+                    <div class="toast-progress"></div>
+                </div>
+
+                <script>
+                function sendMailto(e) {
+                    e.preventDefault();
+
+                    var name = document.getElementById('contact-name').value;
+                    var email = document.getElementById('contact-email').value;
+                    var phone = document.getElementById('contact-phone').value;
+                    var projectType = document.getElementById('contact-project').value;
+                    var message = document.getElementById('contact-message').value;
+
+                    var recipient = 'info@tugboatinteriors.com';
+                    var subject = 'New Project Inquiry - ' + projectType.charAt(0).toUpperCase() + projectType.slice(1);
+
+                    var body = 'Hello Tugboat Urban Interiors,\n\n'
+                        + 'I would like to inquire about your interior design services.\n\n'
+                        + '--- Contact Details ---\n'
+                        + 'Name: ' + name + '\n'
+                        + 'Email: ' + email + '\n'
+                        + 'Phone: ' + phone + '\n'
+                        + 'Project Type: ' + projectType.charAt(0).toUpperCase() + projectType.slice(1) + '\n\n'
+                        + '--- Project Details ---\n'
+                        + message + '\n\n'
+                        + 'Looking forward to hearing from you.\n'
+                        + 'Best regards,\n'
+                        + name;
+
+                    // Open Gmail compose directly in a new tab
+                    var gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1'
+                        + '&to=' + encodeURIComponent(recipient)
+                        + '&su=' + encodeURIComponent(subject)
+                        + '&body=' + encodeURIComponent(body);
+
+                    window.open(gmailUrl, '_blank');
+
+                    // Show success toast
+                    var toastMsg = document.getElementById('toast-message');
+                    toastMsg.textContent = 'Thank you, ' + name + '. Your request has been sent! Please complete sending the email in the Gmail tab that just opened.';
+                    showToast();
+
+                    // Reset the form
+                    document.getElementById('contact-form').reset();
+
+                    return false;
+                }
+
+                function showToast() {
+                    var toast = document.getElementById('success-toast');
+                    toast.classList.add('show');
+
+                    // Auto-dismiss after 8 seconds
+                    clearTimeout(window.toastTimer);
+                    window.toastTimer = setTimeout(function() {
+                        closeToast();
+                    }, 8000);
+                }
+
+                function closeToast() {
+                    var toast = document.getElementById('success-toast');
+                    toast.classList.remove('show');
+                    toast.classList.add('hiding');
+                    setTimeout(function() {
+                        toast.classList.remove('hiding');
+                    }, 400);
+                    clearTimeout(window.toastTimer);
+                }
+                </script>
             </div>
             <div class="contact-info-section">
                 <div class="info-card">
