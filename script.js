@@ -179,11 +179,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const getSequenceConfig = (isMobile) => {
             if (isMobile) {
                 return {
-                    folder: 'frames',
-                    totalFrames: 2313,
-                    step: 2312 / 299,
+                    folder: 'vid portrait',
+                    totalFrames: 1830,
+                    step: 1829 / 299,
                     frameCount: 300,
-                    getFilename: (frameNum) => `frames/frame_${String(frameNum).padStart(4, '0')}.webp`
+                    getFilename: (frameNum) => `vid portrait/video (${frameNum}).jpg`
                 };
             } else {
                 return {
