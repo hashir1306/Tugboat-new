@@ -174,12 +174,17 @@
                         + name;
 
                     // Open Gmail compose directly in a new tab
-                    var gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1'
-                        + '&to=' + encodeURIComponent(recipient)
-                        + '&su=' + encodeURIComponent(subject)
-                        + '&body=' + encodeURIComponent(body);
-
-                    window.open(gmailUrl, '_blank');
+                    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                    if (isMobile) {
+                        var mailtoUrl = 'mailto:' + recipient + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+                        window.location.href = mailtoUrl;
+                    } else {
+                        var gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1'
+                            + '&to=' + encodeURIComponent(recipient)
+                            + '&su=' + encodeURIComponent(subject)
+                            + '&body=' + encodeURIComponent(body);
+                        window.open(gmailUrl, '_blank');
+                    }
 
                     // Show success toast
                     var toastMsg = document.getElementById('toast-message');
@@ -398,3 +403,4 @@
 </body>
 
 </html>
+
