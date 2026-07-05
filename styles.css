@@ -2504,7 +2504,7 @@ body.nav-hidden .projects-subnav-container {
 }
 
 .success-toast.show .toast-progress {
-    animation: toastProgress 8s linear forwards;
+    animation: toastProgress 2s linear forwards;
 }
 
 @keyframes toastProgress {
