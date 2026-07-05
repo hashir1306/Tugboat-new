@@ -1324,7 +1324,17 @@ body.modal-open {
 
 @media (max-width: 900px) {
 
-    .contact-split,
+    .contact-split {
+        grid-template-columns: 1fr;
+        padding: 4rem 1.5rem;
+        gap: 3rem;
+    }
+
+    .contact-form-section,
+    .info-card {
+        padding: 2rem;
+    }
+
     .footer-grid {
         grid-template-columns: 1fr;
     }
