@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (preloader && introVideo) {
         document.body.classList.add('loading');
-        
+
         const hidePreloader = () => {
             if (document.body.classList.contains('loading')) {
                 preloader.style.opacity = '0';
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // When video ends, hide preloader
         introVideo.addEventListener('ended', hidePreloader);
-        
+
         // Fallback in case video fails to load or play after 10 seconds
         setTimeout(hidePreloader, 10000);
     }
@@ -24,17 +24,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Navbar scroll effect
     const navbar = document.getElementById('navbar');
     let isScrollingTimeout;
-    
+
     window.addEventListener('scroll', () => {
         const currentScrollY = window.scrollY;
-        
+
         // Hide navbar immediately when scrolling starts/continues
         navbar.classList.add('hidden');
         document.body.classList.add('nav-hidden');
-        
+
         // Clear previous timeout
         window.clearTimeout(isScrollingTimeout);
-        
+
         // Show navbar after user stops scrolling (200ms debounce)
         isScrollingTimeout = setTimeout(() => {
             navbar.classList.remove('hidden');
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mobile Menu Initialization
     const navContainer = document.querySelector('.nav-container');
     const navLinks = document.querySelector('.nav-links');
-    
+
     if (navContainer && navLinks && !document.querySelector('.mobile-menu-btn')) {
         const mobileBtn = document.createElement('div');
         mobileBtn.className = 'mobile-menu-btn';
@@ -62,13 +62,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 <line x1="3" y1="18" x2="21" y2="18"></line>
             </svg>
         `;
-        
+
         // Insert mobile button before the nav-links
         navContainer.insertBefore(mobileBtn, navLinks);
 
         mobileBtn.addEventListener('click', () => {
             navLinks.classList.toggle('mobile-active');
-            
+
             // Animate hamburger to close button if active
             if (navLinks.classList.contains('mobile-active')) {
                 mobileBtn.innerHTML = `
@@ -127,10 +127,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            
+
             const targetId = this.getAttribute('href');
             if (targetId === '#') return;
-            
+
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
                 targetElement.scrollIntoView({
@@ -162,43 +162,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Apartment Video play/pause functionality
-    const apartmentSection = document.getElementById('apartment-video-section');
-    const apartmentDesktopVideo = document.getElementById('apartment-desktop-video');
-    const apartmentMobileVideo = document.getElementById('apartment-mobile-video');
-    const apartmentPlayIcon = document.getElementById('apartment-play-icon');
-    const apartmentPauseIcon = document.getElementById('apartment-pause-icon');
-
-    if (apartmentSection && apartmentDesktopVideo && apartmentMobileVideo) {
-        apartmentSection.addEventListener('click', () => {
-            // Determine which video is currently active (desktop or mobile)
-            const isMobile = window.innerWidth <= 900;
-            const activeVideo = isMobile ? apartmentMobileVideo : apartmentDesktopVideo;
-            const inactiveVideo = isMobile ? apartmentDesktopVideo : apartmentMobileVideo;
-
-            if (activeVideo.paused) {
-                activeVideo.play();
-                inactiveVideo.play(); // Keep them in sync just in case
-                apartmentSection.classList.remove('paused');
-                apartmentPlayIcon.style.display = 'none';
-                apartmentPauseIcon.style.display = 'block';
-            } else {
-                activeVideo.pause();
-                inactiveVideo.pause();
-                apartmentSection.classList.add('paused');
-                apartmentPlayIcon.style.display = 'block';
-                apartmentPauseIcon.style.display = 'none';
-            }
-        });
-    }
-
     // Scroll Image Sequence Animation
     const canvas = document.getElementById('scroll-canvas');
     const scrollSection = document.getElementById('scroll-sequence');
 
     if (canvas && scrollSection) {
         const context = canvas.getContext('2d', { alpha: false });
-        
+
         let config = null;
         let images = [];
         let isMobileDevice = window.innerWidth <= 900;
@@ -230,16 +200,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const renderImage = (imgElement) => {
             if (!imgElement || !imgElement.complete || imgElement.naturalWidth === 0) return;
-            
+
             // Use cover equivalent (object-fit: cover) for both desktop and mobile to fill the screen
             const scale = Math.max(
                 canvasCSSWidth / imgElement.width,
                 canvasCSSHeight / imgElement.height
             );
-            
+
             const x = (canvasCSSWidth / 2) - (imgElement.width / 2) * scale;
             const y = (canvasCSSHeight / 2) - (imgElement.height / 2) * scale;
-            
+
             context.clearRect(0, 0, canvasCSSWidth, canvasCSSHeight);
             context.drawImage(imgElement, x, y, imgElement.width * scale, imgElement.height * scale);
         };
@@ -248,17 +218,17 @@ document.addEventListener('DOMContentLoaded', () => {
             images = [];
             config = getSequenceConfig(isMobileDevice);
             lastDrawnFrameIndex = -1;
-            
+
             for (let i = 0; i < config.frameCount; i++) {
                 const img = new Image();
                 const frameNum = Math.round(i * config.step) + 1;
                 img.src = config.getFilename(frameNum);
                 images.push(img);
             }
-            
+
             // Draw first frame when loaded
             if (images[0]) {
-                images[0].onload = function() {
+                images[0].onload = function () {
                     if (Math.round(currentRenderedFrame) === 0) {
                         renderImage(images[0]);
                         lastDrawnFrameIndex = 0;
@@ -272,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!container) return;
             const rect = container.getBoundingClientRect();
             const dpr = window.devicePixelRatio || 1;
-            
+
             canvasCSSWidth = rect.width;
             canvasCSSHeight = rect.height;
 
@@ -280,9 +250,9 @@ document.addEventListener('DOMContentLoaded', () => {
             canvas.height = rect.height * dpr;
             canvas.style.width = rect.width + 'px';
             canvas.style.height = rect.height + 'px';
-            
+
             context.setTransform(dpr, 0, 0, dpr, 0, 0); // Explicitly reset transform matrix and apply scale
-            
+
             // Force redraw of current frame
             const frameIndex = Math.round(currentRenderedFrame);
             if (images[frameIndex] && images[frameIndex].complete && images[frameIndex].naturalWidth !== 0) {
@@ -331,9 +301,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const sectionTop = rect.top;
             const sectionHeight = rect.height;
             const viewportHeight = window.innerHeight;
-            
+
             let scrollProgress = 0;
-            
+
             if (sectionTop <= 0) {
                 const maxScroll = sectionHeight - viewportHeight;
                 scrollProgress = maxScroll > 0 ? Math.abs(sectionTop) / maxScroll : 0;
@@ -346,13 +316,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (config) {
                 // Smooth interpolation between frames
                 const diff = targetFrame - currentRenderedFrame;
-                
+
                 if (Math.abs(diff) < 0.1) {
                     currentRenderedFrame = targetFrame;
                 } else {
                     currentRenderedFrame += diff * 0.04; // Smoothness factor
                 }
-                
+
                 const frameIndex = Math.round(currentRenderedFrame);
                 if (frameIndex !== lastDrawnFrameIndex && images[frameIndex]) {
                     const img = images[frameIndex];
@@ -367,7 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             requestAnimationFrame(renderLoop);
         };
-        
+
         requestAnimationFrame(renderLoop);
     }
 
@@ -398,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Map Modal logic for Contact Page
     const viewMapBtns = document.querySelectorAll('.view-map');
     const mapModal = document.getElementById('map-modal');
-    
+
     if (viewMapBtns.length > 0 && mapModal) {
         const closeBtn = mapModal.querySelector('.map-modal-close');
         const overlay = mapModal.querySelector('.map-modal-overlay');
@@ -417,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
         viewMapBtns.forEach(btn => {
             btn.addEventListener('click', openModal);
         });
-        
+
         if (closeBtn) closeBtn.addEventListener('click', closeModal);
         if (overlay) overlay.addEventListener('click', closeModal);
 
@@ -437,7 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
             toastContainer.className = 'toast-container';
             document.body.appendChild(toastContainer);
         }
-        
+
         const toast = document.createElement('div');
         toast.className = 'toast reveal fade-bottom active';
         toast.innerHTML = `
@@ -447,12 +417,12 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <button class="toast-close">&times;</button>
         `;
-        
+
         toastContainer.appendChild(toast);
-        
+
         const closeBtn = toast.querySelector('.toast-close');
         closeBtn.addEventListener('click', () => toast.remove());
-        
+
         setTimeout(() => {
             toast.classList.add('fade-out');
             setTimeout(() => toast.remove(), 300);
@@ -467,7 +437,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Let the native submit action happen to target the background hidden-iframe
                 const submitBtn = form.querySelector('button[type="submit"]');
                 const originalBtnText = submitBtn.innerHTML;
-                
+
                 // Change button state to sending
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = 'SENDING...';
