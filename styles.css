@@ -2520,8 +2520,8 @@ body.nav-hidden .projects-subnav-container {
 @media (max-width: 520px) {
     .success-toast {
         min-width: auto;
-        max-width: calc(100vw - 2rem);
-        left: 1rem;
+        width: calc(100vw - 2rem);
+        left: auto;
         right: -100vw;
     }
 
