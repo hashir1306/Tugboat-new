@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (heroVideo) {
         // Dynamically load video source based on screen size (Video6.mp4 for desktop, Video7.mp4 for mobile)
         const isMobile = window.innerWidth <= 900;
-        const videoSrc = isMobile ? 'https://tugboat-new.vercel.app/Video7.mp4' : 'https://tugboat-new.vercel.app/Video6.mp4';
+        const videoSrc = isMobile ? 'Video7.mp4' : 'Video6.mp4';
         
         const source = document.createElement('source');
         source.src = videoSrc;
