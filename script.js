@@ -146,6 +146,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const playIcon = document.getElementById('play-icon');
     const pauseIcon = document.getElementById('pause-icon');
 
+    if (heroVideo) {
+        // Dynamically load video source based on screen size (Video6.mp4 for desktop, Video7.mp4 for mobile)
+        const isMobile = window.innerWidth <= 900;
+        const videoSrc = isMobile ? 'https://tugboat-new.vercel.app/Video7.mp4' : 'https://tugboat-new.vercel.app/Video6.mp4';
+        
+        const source = document.createElement('source');
+        source.src = videoSrc;
+        source.type = 'video/mp4';
+        heroVideo.appendChild(source);
+        heroVideo.load();
+    }
+
     if (heroVideo && videoContainer) {
         videoContainer.addEventListener('click', () => {
             if (heroVideo.paused) {
