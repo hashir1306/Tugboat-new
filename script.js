@@ -147,9 +147,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const pauseIcon = document.getElementById('pause-icon');
 
     if (heroVideo) {
-        // Dynamically load video source based on screen size (Video6.mp4 for desktop, Video7.mp4 for mobile)
+        // Dynamically load video source based on screen size (Video8.mp4 for desktop, Video8_portrait.mp4 for mobile)
         const isMobile = window.innerWidth <= 900;
-        const videoSrc = isMobile ? 'Video7.mp4' : 'Video6.mp4';
+        const videoSrc = isMobile ? 'Video8_portrait.mp4' : 'Video8.mp4';
         
         const source = document.createElement('source');
         source.src = videoSrc;
@@ -193,11 +193,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const getSequenceConfig = (isMobile) => {
             if (isMobile) {
                 return {
-                    folder: 'vid portrait',
-                    totalFrames: 1830,
-                    step: 1829 / 299,
+                    folder: 'frames1',
+                    totalFrames: 1783,
+                    step: 1782 / 299,
                     frameCount: 300,
-                    getFilename: (frameNum) => `vid portrait/video (${frameNum}).jpg`
+                    getFilename: (frameNum) => `frames1/frames (${frameNum}).webp`
                 };
             } else {
                 return {
@@ -213,17 +213,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const renderImage = (imgElement) => {
             if (!imgElement || !imgElement.complete || imgElement.naturalWidth === 0) return;
 
-            // Use cover equivalent (object-fit: cover) for both desktop and mobile to fill the screen
+            // Use cover equivalent (object-fit: cover) to fill the full canvas without white bars
             const scale = Math.max(
                 canvasCSSWidth / imgElement.width,
                 canvasCSSHeight / imgElement.height
             );
 
-            const x = (canvasCSSWidth / 2) - (imgElement.width / 2) * scale;
-            const y = (canvasCSSHeight / 2) - (imgElement.height / 2) * scale;
+            const drawW = imgElement.width * scale;
+            const drawH = imgElement.height * scale;
+            const x = (canvasCSSWidth - drawW) / 2;
+            const y = (canvasCSSHeight - drawH) / 2;
 
             context.clearRect(0, 0, canvasCSSWidth, canvasCSSHeight);
-            context.drawImage(imgElement, x, y, imgElement.width * scale, imgElement.height * scale);
+            context.drawImage(imgElement, x, y, drawW, drawH);
         };
 
         const loadSequence = () => {
