@@ -25,6 +25,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const navbar = document.getElementById('navbar');
     let isScrollingTimeout;
 
+    const updateNavbarHeight = () => {
+        if (navbar) {
+            const height = navbar.offsetHeight;
+            if (height > 0) {
+                document.documentElement.style.setProperty('--navbar-height', `${height}px`);
+            }
+        }
+    };
+
+    updateNavbarHeight();
+    window.addEventListener('resize', updateNavbarHeight, { passive: true });
+
     window.addEventListener('scroll', () => {
         const currentScrollY = window.scrollY;
 
@@ -39,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         isScrollingTimeout = setTimeout(() => {
             navbar.classList.remove('hidden');
             document.body.classList.remove('nav-hidden');
+            updateNavbarHeight();
         }, 200);
 
         if (currentScrollY > 50) {
@@ -46,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             navbar.classList.remove('scrolled');
         }
+        updateNavbarHeight();
     }, { passive: true });
 
     // Mobile Menu Initialization
@@ -224,7 +238,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const x = (canvasCSSWidth - drawW) / 2;
             const y = (canvasCSSHeight - drawH) / 2;
 
-            context.clearRect(0, 0, canvasCSSWidth, canvasCSSHeight);
             context.drawImage(imgElement, x, y, drawW, drawH);
         };
 
@@ -278,20 +291,25 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const drawNearestLoaded = (frameIndex) => {
-            let closestDist = Infinity;
-            let closestIndex = -1;
-            for (let k = 0; k < images.length; k++) {
-                if (images[k] && images[k].complete && images[k].naturalWidth !== 0) {
-                    const dist = Math.abs(k - frameIndex);
-                    if (dist < closestDist) {
-                        closestDist = dist;
-                        closestIndex = k;
-                    }
-                }
+            if (images[frameIndex] && images[frameIndex].complete && images[frameIndex].naturalWidth !== 0) {
+                renderImage(images[frameIndex]);
+                lastDrawnFrameIndex = frameIndex;
+                return;
             }
-            if (closestIndex !== -1) {
-                renderImage(images[closestIndex]);
-                lastDrawnFrameIndex = closestIndex;
+            // Fast outward search (up to 30 frames) instead of checking full array
+            for (let r = 1; r < 30; r++) {
+                const prev = frameIndex - r;
+                if (prev >= 0 && images[prev] && images[prev].complete && images[prev].naturalWidth !== 0) {
+                    renderImage(images[prev]);
+                    lastDrawnFrameIndex = prev;
+                    return;
+                }
+                const next = frameIndex + r;
+                if (next < images.length && images[next] && images[next].complete && images[next].naturalWidth !== 0) {
+                    renderImage(images[next]);
+                    lastDrawnFrameIndex = next;
+                    return;
+                }
             }
         };
 
@@ -328,23 +346,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const renderLoop = () => {
             if (config) {
-                // Smooth interpolation between frames
+                // Fluid, responsive interpolation without scroll lag
                 const diff = targetFrame - currentRenderedFrame;
 
-                if (Math.abs(diff) < 0.1) {
+                if (Math.abs(diff) < 0.05) {
                     currentRenderedFrame = targetFrame;
                 } else {
-                    currentRenderedFrame += diff * 0.04; // Smoothness factor
+                    currentRenderedFrame += diff * 0.18; // Increased from 0.04 to 0.18 for smooth responsive tracking
                 }
 
                 const frameIndex = Math.round(currentRenderedFrame);
-                if (frameIndex !== lastDrawnFrameIndex && images[frameIndex]) {
-                    const img = images[frameIndex];
-                    if (img.complete && img.naturalWidth !== 0) {
-                        renderImage(img);
+                if (frameIndex !== lastDrawnFrameIndex) {
+                    if (images[frameIndex] && images[frameIndex].complete && images[frameIndex].naturalWidth !== 0) {
+                        renderImage(images[frameIndex]);
                         lastDrawnFrameIndex = frameIndex;
                     } else {
-                        // Fallback to nearest loaded frame
                         drawNearestLoaded(frameIndex);
                     }
                 }

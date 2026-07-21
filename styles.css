@@ -6,6 +6,7 @@
     --border-color: #a8947f;
     --font-primary: 'Outfit', sans-serif;
     --padding-section: 120px 5%;
+    --navbar-height: 90px;
 }
 
 * {
@@ -315,7 +316,6 @@ body.loading {
     height: 100%;
     object-fit: cover;
     display: block;
-    filter: contrast(1.15) saturate(1.2) brightness(1.05);
     will-change: transform;
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
@@ -417,8 +417,24 @@ body.loading {
     gap: 6rem;
 }
 
+.philosophy-text {
+    font-size: 1.65rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+    max-width: 580px;
+}
+
+.philosophy-signoff {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
 .social-links {
-    margin-top: 4rem;
+    margin-top: 3rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -450,16 +466,45 @@ body.loading {
     border: none;
     border-bottom: 1px solid var(--border-color);
     padding: 1rem 0;
-    color: var(--text-color);
+    color: #111111;
     font-family: var(--font-primary);
     font-size: 1.1rem;
+    font-weight: 400;
     transition: border-color 0.4s ease;
+}
+
+.minimal-form input::placeholder,
+.minimal-form textarea::placeholder {
+    color: #111111;
+    opacity: 1;
+    font-weight: 400;
+}
+
+.minimal-form input::-webkit-input-placeholder,
+.minimal-form textarea::-webkit-input-placeholder {
+    color: #111111;
+    opacity: 1;
+    font-weight: 400;
+}
+
+.minimal-form input::-moz-placeholder,
+.minimal-form textarea::-moz-placeholder {
+    color: #111111;
+    opacity: 1;
+    font-weight: 400;
+}
+
+.minimal-form input:-ms-input-placeholder,
+.minimal-form textarea:-ms-input-placeholder {
+    color: #111111;
+    opacity: 1;
+    font-weight: 400;
 }
 
 .minimal-form input:focus,
 .minimal-form textarea:focus {
     outline: none;
-    border-bottom-color: var(--text-color);
+    border-bottom-color: #111111;
 }
 
 .minimal-form textarea {
@@ -1451,13 +1496,19 @@ body.modal-open {
     background-color: #e5dfd5;
     border-bottom: 1px solid #d0c8b8;
     position: sticky;
-    top: 90px;
+    top: var(--navbar-height, 90px);
     z-index: 90;
     transition: top 0.3s ease;
 }
 
+@media (max-width: 900px) {
+    .projects-subnav-container {
+        top: var(--navbar-height, 56px);
+    }
+}
+
 body.nav-hidden .projects-subnav-container {
-    top: 0;
+    top: 0 !important;
 }
 
 .projects-subnav {
