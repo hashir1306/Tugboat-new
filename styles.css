@@ -1778,7 +1778,7 @@ body.nav-hidden .projects-subnav-container {
     grid-column: 2 / 3;
     grid-row: 1 / 3;
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    grid-auto-rows: 1fr;
     gap: 1rem;
 }
 
@@ -1803,6 +1803,70 @@ body.nav-hidden .projects-subnav-container {
     .grid-side {
         grid-template-columns: 1fr 1fr;
         grid-template-rows: auto;
+    }
+}
+
+/* 5-Photo Compact Gallery Grid for Bake & Bite (Single Screen View) */
+.gallery-grid-5 {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    max-height: 520px;
+}
+
+.gallery-grid-5 .frame-row-3 {
+    display: grid;
+    grid-template-columns: 1.2fr 0.9fr 0.9fr;
+    gap: 0.75rem;
+    height: 250px;
+}
+
+.gallery-grid-5 .frame-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    height: 250px;
+}
+
+.gallery-grid-5 .photo-frame {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 6px;
+    background-color: transparent;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-grid-5 .photo-frame:hover {
+    transform: scale(1.02);
+}
+
+.gallery-grid-5 .photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+@media (max-width: 900px) {
+    .gallery-grid-5 {
+        max-height: none;
+    }
+    
+    .gallery-grid-5 .frame-row-3 {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    
+    .gallery-grid-5 .frame-row-2 {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    
+    .gallery-grid-5 .photo-frame {
+        height: auto;
+        aspect-ratio: 4/3;
     }
 }
 
@@ -2593,4 +2657,168 @@ body.nav-hidden .projects-subnav-container {
     .success-toast.hiding {
         right: -100vw;
     }
+}
+
+/* ==========================================================================
+   Interactive Lightbox / Image Viewer System
+   ========================================================================== */
+
+.gallery-grid img,
+.gallery-grid-5 img,
+.photo-frame img,
+.project-gallery img,
+.grid-main img,
+.grid-side img {
+    cursor: pointer;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.gallery-grid img:hover,
+.gallery-grid-5 img:hover,
+.photo-frame img:hover,
+.project-gallery img:hover {
+    filter: brightness(1.08);
+}
+
+.lightbox-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 10, 10, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s ease;
+}
+
+.lightbox-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lightbox-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0.92);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lightbox-modal.active .lightbox-content {
+    transform: scale(1);
+}
+
+.lightbox-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    max-height: 80vh;
+}
+
+.lightbox-image {
+    max-width: 90vw;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 6px;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: zoom-in;
+    user-select: none;
+}
+
+.lightbox-image.zoomed {
+    transform: scale(1.6);
+    cursor: zoom-out;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 2rem;
+    right: 2.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 1.8rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    z-index: 10010;
+    line-height: 1;
+}
+
+.lightbox-close:hover {
+    background: #c8956c;
+    border-color: #c8956c;
+    transform: rotate(90deg);
+}
+
+.lightbox-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-size: 1.5rem;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    z-index: 10010;
+}
+
+.lightbox-prev {
+    left: 2rem;
+}
+
+.lightbox-next {
+    right: 2rem;
+}
+
+.lightbox-nav-btn:hover {
+    background: #c8956c;
+    border-color: #c8956c;
+    transform: translateY(-50%) scale(1.08);
+}
+
+.lightbox-caption {
+    margin-top: 1.2rem;
+    color: #e5dfd5;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.lightbox-counter {
+    font-size: 0.8rem;
+    color: #c8956c;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
 }
