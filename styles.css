@@ -1493,12 +1493,19 @@ body.modal-open {
 }
 
 .projects-subnav-container {
-    background-color: #e5dfd5;
-    border-bottom: 1px solid #d0c8b8;
+    background-color: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
     position: sticky;
-    top: var(--navbar-height, 90px);
+    top: var(--navbar-height, 70px);
     z-index: 90;
     transition: top 0.3s ease;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+}
+
+.projects-subnav-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 }
 
 @media (max-width: 900px) {
@@ -1516,11 +1523,12 @@ body.nav-hidden .projects-subnav-container {
     justify-content: space-between;
     align-items: center;
     padding: 0 5%;
+    min-width: max-content;
 }
 
 .subnav-tabs {
     display: flex;
-    gap: 3rem;
+    gap: 2.5rem;
 }
 
 .tab-btn {
@@ -1536,6 +1544,7 @@ body.nav-hidden .projects-subnav-container {
     position: relative;
     text-transform: uppercase;
     transition: color 0.3s;
+    white-space: nowrap;
 }
 
 .tab-btn::after {
@@ -1557,6 +1566,30 @@ body.nav-hidden .projects-subnav-container {
 
 .tab-btn.active::after {
     transform: scaleX(1);
+}
+
+@media (max-width: 768px) {
+    .projects-subnav {
+        padding: 0 4%;
+    }
+    .subnav-tabs {
+        gap: 1.25rem;
+    }
+    .tab-btn {
+        padding: 1rem 0;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+    }
+}
+
+@media (max-width: 480px) {
+    .subnav-tabs {
+        gap: 0.85rem;
+    }
+    .tab-btn {
+        font-size: 0.72rem;
+        letter-spacing: 0.05em;
+    }
 }
 
 .subnav-filter {
