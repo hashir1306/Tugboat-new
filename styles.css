@@ -520,10 +520,43 @@ footer {
 .footer-bottom {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     color: var(--text-muted);
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-developer {
+    display: flex;
+    align-items: center;
+}
+
+.developer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+.developer-link:hover {
+    color: var(--text-color);
+}
+
+.developer-link svg {
+    color: currentColor;
+    transition: transform 0.3s ease;
+}
+
+.developer-link:hover svg {
+    transform: scale(1.2);
 }
 
 /* Animations */
