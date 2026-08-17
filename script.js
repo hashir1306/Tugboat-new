@@ -593,11 +593,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Delegate click events on all gallery images
         document.body.addEventListener('click', (e) => {
-            const targetImg = e.target.closest('.gallery-grid img, .gallery-grid-5 img, .photo-frame img, .project-gallery img');
+            const targetImg = e.target.closest('.gallery-grid img, .gallery-grid-5 img, .gallery-grid-2x2 img, .photo-frame img, .project-gallery img');
             if (!targetImg) return;
 
             // Find parent gallery container
-            const galleryContainer = targetImg.closest('.gallery-grid, .gallery-grid-5, .project-gallery-col, .project-gallery');
+            const galleryContainer = targetImg.closest('.gallery-grid, .gallery-grid-5, .gallery-grid-2x2, .project-gallery-col, .project-gallery');
             const imagesInGallery = Array.from((galleryContainer || document).querySelectorAll('img'));
             
             const galleryList = imagesInGallery.map(img => ({
