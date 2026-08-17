@@ -52,6 +52,7 @@
                     <button class="tab-btn active" data-tab="residential">RESIDENTIAL</button>
                     <button class="tab-btn" data-tab="commercial">COMMERCIAL</button>
                     <button class="tab-btn" data-tab="retail">RETAIL</button>
+                    <button class="tab-btn" data-tab="landscaping">LANDSCAPING</button>
                 </div>
             </div>
         </div>
@@ -466,6 +467,141 @@
                                     <img src="photos/11.jpeg" alt="SHLOUF Kitchen &amp; Lounge 2">
                                     <img src="photos/12.jpeg" alt="SHLOUF Kitchen &amp; Lounge 3">
                                     <img src="photos/13.jpeg" alt="SHLOUF Kitchen &amp; Lounge 4">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Landscaping Projects -->
+            <div class="tab-content" id="tab-landscaping">
+                
+                <!-- Project List View -->
+                <div id="landscaping-list" class="project-list-grid">
+                    <div class="project-list-item reveal fade-bottom" onclick="document.getElementById('landscaping-list').style.display='none'; document.getElementById('landscaping-oasis').style.display='block';">
+                        <img src="photos/34.jpeg" alt="Villa Oasis Gardens">
+                        <div class="item-overlay">
+                            <h3>Villa Oasis Gardens</h3>
+                            <p>Dubai Hills / 2025</p>
+                            <span class="view-text">View Project &rarr;</span>
+                        </div>
+                    </div>
+                    <div class="project-list-item reveal fade-bottom" style="transition-delay: 0.1s;" onclick="document.getElementById('landscaping-list').style.display='none'; document.getElementById('landscaping-sanctuary').style.display='block';">
+                        <img src="photos/38.jpeg" alt="The Palm Sanctuary Grounds">
+                        <div class="item-overlay">
+                            <h3>The Palm Sanctuary Grounds</h3>
+                            <p>Palm Jumeirah / 2026</p>
+                            <span class="view-text">View Project &rarr;</span>
+                        </div>
+                    </div>
+                    <div class="project-list-item reveal fade-bottom" style="transition-delay: 0.2s;" onclick="document.getElementById('landscaping-list').style.display='none'; document.getElementById('landscaping-botanica').style.display='block';">
+                        <img src="photos/42.jpeg" alt="Botanica Estate Gardens">
+                        <div class="item-overlay">
+                            <h3>Botanica Estate Gardens</h3>
+                            <p>Emirates Hills / 2025</p>
+                            <span class="view-text">View Project &rarr;</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail View: Villa Oasis Gardens -->
+                <div id="landscaping-oasis" style="display: none; animation: fadeIn 0.5s ease;">
+                    <div class="project-view">
+                        <div class="project-details-col">
+                            <a href="javascript:void(0)" class="back-link" onclick="document.getElementById('landscaping-oasis').style.display='none'; document.getElementById('landscaping-list').style.display='grid';">&larr; BACK TO LANDSCAPING</a>
+                            <h2 class="project-name">Villa Oasis Gardens</h2>
+                            <p class="project-location">Dubai Hills</p>
+                            
+                            <p class="project-desc">A luxurious residential landscape design featuring custom poolside dining pergolas, lush tropical plantings, integrated architectural lighting, and tranquil water elements designed for outdoor entertaining.</p>
+                            
+                            <div class="project-specs">
+                                <div class="spec-row"><span class="spec-label">TYPE</span><span class="spec-value">Landscaping</span></div>
+                                <div class="spec-row"><span class="spec-label">SIZE</span><span class="spec-value">4,200 sq. ft.</span></div>
+                                <div class="spec-row"><span class="spec-label">STATUS</span><span class="spec-value">Completed</span></div>
+                                <div class="spec-row"><span class="spec-label">YEAR</span><span class="spec-value">2025</span></div>
+                            </div>
+                            
+                            <a href="javascript:void(0)" class="btn-next-project" onclick="document.getElementById('landscaping-oasis').style.display='none'; document.getElementById('landscaping-sanctuary').style.display='block'; window.scrollTo(0, 0);">VIEW NEXT PROJECT &rarr;</a>
+                        </div>
+                        <div class="project-gallery-col">
+                            <div class="gallery-grid">
+                                <div class="grid-main">
+                                    <img src="photos/34.jpeg" alt="Villa Oasis Gardens 1">
+                                </div>
+                                <div class="grid-side">
+                                    <img src="photos/35.jpeg" alt="Villa Oasis Gardens 2">
+                                    <img src="photos/36.jpeg" alt="Villa Oasis Gardens 3">
+                                    <img src="photos/37.jpeg" alt="Villa Oasis Gardens 4">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail View: The Palm Sanctuary Grounds -->
+                <div id="landscaping-sanctuary" style="display: none; animation: fadeIn 0.5s ease;">
+                    <div class="project-view">
+                        <div class="project-details-col">
+                            <a href="javascript:void(0)" class="back-link" onclick="document.getElementById('landscaping-sanctuary').style.display='none'; document.getElementById('landscaping-list').style.display='grid';">&larr; BACK TO LANDSCAPING</a>
+                            <h2 class="project-name">The Palm Sanctuary Grounds</h2>
+                            <p class="project-location">Palm Jumeirah</p>
+                            
+                            <p class="project-desc">A modern coastal landscape masterpiece blending contemporary stone hardscaping, fire pit lounge areas, sculptured flora, and serene garden pathways framing breathtaking sea views.</p>
+                            
+                            <div class="project-specs">
+                                <div class="spec-row"><span class="spec-label">TYPE</span><span class="spec-value">Landscaping</span></div>
+                                <div class="spec-row"><span class="spec-label">SIZE</span><span class="spec-value">6,800 sq. ft.</span></div>
+                                <div class="spec-row"><span class="spec-label">STATUS</span><span class="spec-value">Completed</span></div>
+                                <div class="spec-row"><span class="spec-label">YEAR</span><span class="spec-value">2026</span></div>
+                            </div>
+                            
+                            <a href="javascript:void(0)" class="btn-next-project" onclick="document.getElementById('landscaping-sanctuary').style.display='none'; document.getElementById('landscaping-botanica').style.display='block'; window.scrollTo(0, 0);">VIEW NEXT PROJECT &rarr;</a>
+                        </div>
+                        <div class="project-gallery-col">
+                            <div class="gallery-grid">
+                                <div class="grid-main">
+                                    <img src="photos/38.jpeg" alt="The Palm Sanctuary Grounds 1">
+                                </div>
+                                <div class="grid-side">
+                                    <img src="photos/39.jpeg" alt="The Palm Sanctuary Grounds 2">
+                                    <img src="photos/40.jpeg" alt="The Palm Sanctuary Grounds 3">
+                                    <img src="photos/41.jpeg" alt="The Palm Sanctuary Grounds 4">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail View: Botanica Estate Gardens -->
+                <div id="landscaping-botanica" style="display: none; animation: fadeIn 0.5s ease;">
+                    <div class="project-view">
+                        <div class="project-details-col">
+                            <a href="javascript:void(0)" class="back-link" onclick="document.getElementById('landscaping-botanica').style.display='none'; document.getElementById('landscaping-list').style.display='grid';">&larr; BACK TO LANDSCAPING</a>
+                            <h2 class="project-name">Botanica Estate Gardens</h2>
+                            <p class="project-location">Emirates Hills</p>
+                            
+                            <p class="project-desc">An expansive private estate garden incorporating zen courtyard water features, manicured lawn terraces, bespoke outdoor kitchens, and ambient evening garden illumination.</p>
+                            
+                            <div class="project-specs">
+                                <div class="spec-row"><span class="spec-label">TYPE</span><span class="spec-value">Landscaping</span></div>
+                                <div class="spec-row"><span class="spec-label">SIZE</span><span class="spec-value">8,500 sq. ft.</span></div>
+                                <div class="spec-row"><span class="spec-label">STATUS</span><span class="spec-value">Completed</span></div>
+                                <div class="spec-row"><span class="spec-label">YEAR</span><span class="spec-value">2025</span></div>
+                            </div>
+                            
+                            <a href="javascript:void(0)" class="btn-next-project" onclick="document.getElementById('landscaping-botanica').style.display='none'; document.getElementById('landscaping-oasis').style.display='block'; window.scrollTo(0, 0);">VIEW NEXT PROJECT &rarr;</a>
+                        </div>
+                        <div class="project-gallery-col">
+                            <div class="gallery-grid">
+                                <div class="grid-main">
+                                    <img src="photos/42.jpeg" alt="Botanica Estate Gardens 1">
+                                </div>
+                                <div class="grid-side">
+                                    <img src="photos/43.jpeg" alt="Botanica Estate Gardens 2">
+                                    <img src="photos/44.jpeg" alt="Botanica Estate Gardens 3">
+                                    <img src="photos/45.jpeg" alt="Botanica Estate Gardens 4">
                                 </div>
                             </div>
                         </div>
