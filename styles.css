@@ -2451,6 +2451,26 @@ body.nav-hidden .projects-subnav-container {
     max-width: none;
 }
 
+.tagline-stat-reach {
+    flex: 0 1 300px;
+}
+
+.stat-heading-reach {
+    font-size: clamp(1.2rem, 2vw, 1.6rem) !important;
+    font-weight: 400 !important;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px !important;
+}
+
+.stat-subtext-reach {
+    font-size: 0.68rem !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    color: var(--text-muted) !important;
+    font-weight: 400 !important;
+    line-height: 1.4 !important;
+}
+
 /* Center tagline block */
 .tagline-center {
     flex: 1;
