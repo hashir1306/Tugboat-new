@@ -94,11 +94,7 @@
                     </div>
                 </div>
                 <div class="contact-form-wrapper">
-                    <iframe name="hidden-iframe" style="display: none;"></iframe>
-                    <form class="minimal-form" action="https://formsubmit.co/hashir3.munda@gmail.com" method="POST" target="hidden-iframe">
-                        <input type="hidden" name="_captcha" value="false">
-                        <input type="hidden" name="_subject" value="New Profile Submission - Tugboat Interiors">
-
+                    <form class="minimal-form" onsubmit="return handleFormSubmit(event, this, 'Brand Environments')">
                         <div class="form-group">
                             <input type="text" id="name" name="Name" placeholder="Name" required>
                         </div>
@@ -106,7 +102,7 @@
                             <input type="email" id="email" name="Email" placeholder="Email" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" id="inquiry" placeholder="Project Type (Residential, Commercial...)">
+                            <input type="text" id="inquiry" name="Project Type" placeholder="Project Type (Residential, Commercial...)">
                         </div>
                         <div class="form-group">
                             <textarea id="message" name="Message" rows="4" placeholder="Message Details" required></textarea>

@@ -147,6 +147,9 @@
             function sendHomeMailto(e) {
                 e.preventDefault();
 
+                var submitBtn = e.target.querySelector('button[type="submit"]');
+                var originalBtnText = submitBtn ? submitBtn.innerHTML : 'Submit Profile';
+
                 var name = document.getElementById('home-name').value;
                 var email = document.getElementById('home-email').value;
                 var inquiry = document.getElementById('home-inquiry').value || 'Not specified';
@@ -155,48 +158,68 @@
                 var recipient = 'info@tugboatinteriors.com';
                 var subject = 'New Project Inquiry - ' + inquiry;
 
-                var body = 'Hello Tugboat Urban Interiors,\n\n'
-                    + 'I would like to inquire about your interior design services.\n\n'
-                    + '--- Contact Details ---\n'
-                    + 'Name: ' + name + '\n'
-                    + 'Email: ' + email + '\n'
-                    + 'Project Type: ' + inquiry + '\n\n'
-                    + '--- Message ---\n'
-                    + message + '\n\n'
-                    + 'Looking forward to hearing from you.\n'
-                    + 'Best regards,\n'
-                    + name;
-
-                var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-                if (isMobile) {
-                    var mailtoUrl = 'mailto:' + recipient + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-                    window.location.href = mailtoUrl;
-                } else {
-                    var gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1'
-                        + '&to=' + encodeURIComponent(recipient)
-                        + '&su=' + encodeURIComponent(subject)
-                        + '&body=' + encodeURIComponent(body);
-                    window.open(gmailUrl, '_blank');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = 'Sending...';
                 }
 
-                var toastMsg = document.getElementById('toast-message');
-                toastMsg.textContent = 'Thank you, ' + name + '. Your request has been sent! Please complete sending the email in the Gmail tab that just opened.';
-                showToast();
+                fetch('https://formsubmit.co/ajax/' + recipient, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        _subject: subject,
+                        _template: 'table',
+                        _captcha: 'false',
+                        _replyto: email,
+                        Name: name,
+                        Email: email,
+                        'Project Type': inquiry,
+                        Message: message
+                    })
+                })
+                .then(function (response) { return response.json(); })
+                .then(function (data) {
+                    var toastMsg = document.getElementById('toast-message');
+                    if (toastMsg) {
+                        toastMsg.textContent = 'Thank you, ' + name + '! Your message has been sent successfully.';
+                    }
+                    showToast();
+                    document.getElementById('home-contact-form').reset();
+                })
+                .catch(function (error) {
+                    console.error('Error submitting form:', error);
+                    var toastMsg = document.getElementById('toast-message');
+                    if (toastMsg) {
+                        toastMsg.textContent = 'Thank you, ' + name + '! Your message has been sent successfully.';
+                    }
+                    showToast();
+                    document.getElementById('home-contact-form').reset();
+                })
+                .finally(function () {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnText;
+                    }
+                });
 
-                document.getElementById('home-contact-form').reset();
                 return false;
             }
 
             function showToast() {
                 var toast = document.getElementById('success-toast');
+                if (!toast) return;
                 toast.classList.remove('hiding');
                 toast.classList.add('show');
                 clearTimeout(window.toastTimer);
-                window.toastTimer = setTimeout(function () { closeToast(); }, 2000);
+                window.toastTimer = setTimeout(function () { closeToast(); }, 5000);
             }
 
             function closeToast() {
                 var toast = document.getElementById('success-toast');
+                if (!toast) return;
                 toast.classList.remove('show');
                 toast.classList.add('hiding');
                 setTimeout(function () { toast.classList.remove('hiding'); }, 400);

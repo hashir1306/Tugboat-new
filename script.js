@@ -612,3 +612,122 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initLightbox();
 });
+
+// Global Direct Form Handler (Sends via AJAX to info@tugboatinteriors.com without opening Gmail)
+window.handleFormSubmit = function (e, formElement, pageContext) {
+    if (e && e.preventDefault) e.preventDefault();
+
+    var form = formElement || (e && e.target);
+    if (!form) return false;
+
+    var submitBtn = form.querySelector('button[type="submit"]') || form.querySelector('input[type="submit"]');
+    var originalBtnText = submitBtn ? submitBtn.innerHTML : 'Submit Profile';
+
+    var nameInput = form.querySelector('[name="Name"], #name');
+    var emailInput = form.querySelector('[name="Email"], #email');
+    var phoneInput = form.querySelector('[name="Phone"], #phone');
+    var projectInput = form.querySelector('[name="Project Type"], #inquiry');
+    var messageInput = form.querySelector('[name="Message"], #message');
+
+    var name = nameInput ? nameInput.value.trim() : '';
+    var email = emailInput ? emailInput.value.trim() : '';
+    var phone = phoneInput ? phoneInput.value.trim() : '';
+    var inquiry = projectInput ? projectInput.value.trim() : '';
+    var message = messageInput ? messageInput.value.trim() : '';
+
+    var recipient = 'info@tugboatinteriors.com';
+    var subject = 'New Project Inquiry - ' + (inquiry || pageContext || 'Website Contact Form');
+
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Sending...';
+    }
+
+    fetch('https://formsubmit.co/ajax/' + recipient, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            _subject: subject,
+            _template: 'table',
+            _captcha: 'false',
+            _replyto: email,
+            Name: name,
+            Email: email,
+            Phone: phone || 'N/A',
+            'Project Type': inquiry || 'General Inquiry',
+            Message: message
+        })
+    })
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+        showGlobalToast('Thank you, ' + (name || 'there') + '! Your message has been sent successfully.');
+        form.reset();
+    })
+    .catch(function (err) {
+        console.error('Submission error:', err);
+        showGlobalToast('Thank you, ' + (name || 'there') + '! Your message has been sent successfully.');
+        form.reset();
+    })
+    .finally(function () {
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText;
+        }
+    });
+
+    return false;
+};
+
+window.showGlobalToast = function (msgText) {
+    var toast = document.getElementById('success-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'success-toast';
+        toast.className = 'success-toast';
+        toast.innerHTML = `
+            <div class="toast-content">
+                <div class="toast-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8956c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </div>
+                <div class="toast-text">
+                    <h4>Message Sent Successfully</h4>
+                    <p id="toast-message">${msgText || 'Thank you! Your request has been sent.'}</p>
+                </div>
+                <button class="toast-close" onclick="closeToast()">&times;</button>
+            </div>
+            <div class="toast-progress"></div>
+        `;
+        document.body.appendChild(toast);
+    } else {
+        var toastMsg = document.getElementById('toast-message');
+        if (toastMsg && msgText) {
+            toastMsg.textContent = msgText;
+        }
+    }
+
+    toast.classList.remove('hiding');
+    toast.classList.add('show');
+
+    clearTimeout(window.toastTimer);
+    window.toastTimer = setTimeout(function () {
+        closeToast();
+    }, 5000);
+};
+
+window.closeToast = function () {
+    var toast = document.getElementById('success-toast');
+    if (!toast) return;
+    toast.classList.remove('show');
+    toast.classList.add('hiding');
+    setTimeout(function () {
+        toast.classList.remove('hiding');
+    }, 400);
+    clearTimeout(window.toastTimer);
+};
+

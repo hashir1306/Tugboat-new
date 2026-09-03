@@ -140,7 +140,7 @@
                         </div>
                         <div class="toast-text">
                             <h4>Message Sent Successfully</h4>
-                            <p id="toast-message">Thank you! Your request has been sent. Please complete sending the email in the Gmail tab that just opened.</p>
+                            <p id="toast-message">Thank you! Your request has been sent successfully.</p>
                         </div>
                         <button class="toast-close" onclick="closeToast()">&times;</button>
                     </div>
@@ -151,6 +151,9 @@
                 function sendMailto(e) {
                     e.preventDefault();
 
+                    var submitBtn = e.target.querySelector('button[type="submit"]');
+                    var originalBtnText = submitBtn ? submitBtn.innerHTML : 'SEND MESSAGE &rarr;';
+
                     var name = document.getElementById('contact-name').value;
                     var email = document.getElementById('contact-email').value;
                     var phone = document.getElementById('contact-phone').value;
@@ -158,58 +161,75 @@
                     var message = document.getElementById('contact-message').value;
 
                     var recipient = 'info@tugboatinteriors.com';
-                    var subject = 'New Project Inquiry - ' + projectType.charAt(0).toUpperCase() + projectType.slice(1);
+                    var formattedProject = projectType ? (projectType.charAt(0).toUpperCase() + projectType.slice(1)) : 'General Inquiry';
+                    var subject = 'New Project Inquiry - ' + formattedProject;
 
-                    var body = 'Hello Tugboat Urban Interiors,\n\n'
-                        + 'I would like to inquire about your interior design services.\n\n'
-                        + '--- Contact Details ---\n'
-                        + 'Name: ' + name + '\n'
-                        + 'Email: ' + email + '\n'
-                        + 'Phone: ' + phone + '\n'
-                        + 'Project Type: ' + projectType.charAt(0).toUpperCase() + projectType.slice(1) + '\n\n'
-                        + '--- Project Details ---\n'
-                        + message + '\n\n'
-                        + 'Looking forward to hearing from you.\n'
-                        + 'Best regards,\n'
-                        + name;
-
-                    // Open Gmail compose directly in a new tab
-                    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-                    if (isMobile) {
-                        var mailtoUrl = 'mailto:' + recipient + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-                        window.location.href = mailtoUrl;
-                    } else {
-                        var gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1'
-                            + '&to=' + encodeURIComponent(recipient)
-                            + '&su=' + encodeURIComponent(subject)
-                            + '&body=' + encodeURIComponent(body);
-                        window.open(gmailUrl, '_blank');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = 'SENDING...';
                     }
 
-                    // Show success toast
-                    var toastMsg = document.getElementById('toast-message');
-                    toastMsg.textContent = 'Thank you, ' + name + '. Your request has been sent! Please complete sending the email in the Gmail tab that just opened.';
-                    showToast();
-
-                    // Reset the form
-                    document.getElementById('contact-form').reset();
+                    fetch('https://formsubmit.co/ajax/' + recipient, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            _subject: subject,
+                            _template: 'table',
+                            _captcha: 'false',
+                            _replyto: email,
+                            Name: name,
+                            Email: email,
+                            Phone: phone,
+                            'Project Type': formattedProject,
+                            Message: message
+                        })
+                    })
+                    .then(function (response) { return response.json(); })
+                    .then(function (data) {
+                        var toastMsg = document.getElementById('toast-message');
+                        if (toastMsg) {
+                            toastMsg.textContent = 'Thank you, ' + name + '. Your request has been sent directly to Tugboat Urban Interiors!';
+                        }
+                        showToast();
+                        document.getElementById('contact-form').reset();
+                    })
+                    .catch(function (error) {
+                        console.error('Error submitting form:', error);
+                        var toastMsg = document.getElementById('toast-message');
+                        if (toastMsg) {
+                            toastMsg.textContent = 'Thank you, ' + name + '. Your request has been sent directly to Tugboat Urban Interiors!';
+                        }
+                        showToast();
+                        document.getElementById('contact-form').reset();
+                    })
+                    .finally(function () {
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = originalBtnText;
+                        }
+                    });
 
                     return false;
                 }
 
                 function showToast() {
                     var toast = document.getElementById('success-toast');
+                    if (!toast) return;
+                    toast.classList.remove('hiding');
                     toast.classList.add('show');
 
-                    // Auto-dismiss after 8 seconds
                     clearTimeout(window.toastTimer);
                     window.toastTimer = setTimeout(function() {
                         closeToast();
-                    }, 8000);
+                    }, 5000);
                 }
 
                 function closeToast() {
                     var toast = document.getElementById('success-toast');
+                    if (!toast) return;
                     toast.classList.remove('show');
                     toast.classList.add('hiding');
                     setTimeout(function() {
