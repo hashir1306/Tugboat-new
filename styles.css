@@ -2976,3 +2976,22 @@ body.nav-hidden .projects-subnav-container {
         gap: 1rem;
     }
 }
+
+/* Screen-reader only utility for SEO headings */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.page-main-heading {
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    margin-bottom: 1rem;
+    text-transform: none;
+}
