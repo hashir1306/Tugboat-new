@@ -265,12 +265,14 @@ body.loading {
     align-items: center;
     justify-content: center;
     pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    opacity: 0.15;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
 }
 
 .video-container.paused .video-btn {
     opacity: 1;
+    visibility: visible;
 }
 
 .hero-content {
@@ -1534,12 +1536,14 @@ body.modal-open {
     transition: top 0.3s ease;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
+    scrollbar-width: none;
+    /* Firefox */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .projects-subnav-container::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    display: none;
+    /* Chrome, Safari, Opera */
 }
 
 @media (max-width: 900px) {
@@ -1613,9 +1617,11 @@ body.nav-hidden .projects-subnav-container {
     .projects-subnav {
         padding: 0 4%;
     }
+
     .subnav-tabs {
         gap: 1.25rem;
     }
+
     .tab-btn {
         padding: 1rem 0;
         font-size: 0.78rem;
@@ -1627,6 +1633,7 @@ body.nav-hidden .projects-subnav-container {
     .subnav-tabs {
         gap: 0.85rem;
     }
+
     .tab-btn {
         font-size: 0.74rem;
         letter-spacing: 0.05em;
@@ -1945,17 +1952,17 @@ body.nav-hidden .projects-subnav-container {
     .gallery-grid-5 {
         max-height: none;
     }
-    
+
     .gallery-grid-5 .frame-row-3 {
         grid-template-columns: 1fr;
         height: auto;
     }
-    
+
     .gallery-grid-5 .frame-row-2 {
         grid-template-columns: 1fr;
         height: auto;
     }
-    
+
     .gallery-grid-5 .photo-frame {
         height: auto;
         aspect-ratio: 4/3;
@@ -2994,4 +3001,27 @@ body.nav-hidden .projects-subnav-container {
     font-size: clamp(2.5rem, 4vw, 4rem);
     margin-bottom: 1rem;
     text-transform: none;
+}
+
+#formMessage {
+    margin-top: 20px;
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 16px;
+    border-radius: 8px;
+    display: none;
+}
+
+#formMessage.success {
+    display: block;
+    background: rgba(50, 180, 100, 0.12);
+    border: 1px solid rgba(50, 180, 100, 0.4);
+    color: #72d99a;
+}
+
+#formMessage.error {
+    display: block;
+    background: rgba(220, 60, 60, 0.12);
+    border: 1px solid rgba(220, 60, 60, 0.4);
+    color: #ff8585;
 }

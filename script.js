@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Dynamically load video source based on screen size (Video8.mp4 for desktop, Video8_portrait.mp4 for mobile)
         const isMobile = window.innerWidth <= 900;
         const videoSrc = isMobile ? 'Video8_portrait.mp4' : 'Video8.mp4';
-        
+
         const source = document.createElement('source');
         source.src = videoSrc;
         source.type = 'video/mp4';
@@ -173,19 +173,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (heroVideo && videoContainer) {
+        const updateVideoUI = () => {
+            if (heroVideo.paused) {
+                videoContainer.classList.add('paused');
+                if (playIcon) playIcon.style.display = 'block';
+                if (pauseIcon) pauseIcon.style.display = 'none';
+            } else {
+                videoContainer.classList.remove('paused');
+                if (playIcon) playIcon.style.display = 'none';
+                if (pauseIcon) pauseIcon.style.display = 'block';
+            }
+        };
+
         videoContainer.addEventListener('click', () => {
             if (heroVideo.paused) {
                 heroVideo.play();
-                videoContainer.classList.remove('paused');
-                playIcon.style.display = 'none';
-                pauseIcon.style.display = 'block';
             } else {
                 heroVideo.pause();
-                videoContainer.classList.add('paused');
-                playIcon.style.display = 'block';
-                pauseIcon.style.display = 'none';
             }
         });
+
+        heroVideo.addEventListener('play', updateVideoUI);
+        heroVideo.addEventListener('pause', updateVideoUI);
+        updateVideoUI();
     }
 
     // Scroll Image Sequence Animation
@@ -599,7 +609,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Find parent gallery container
             const galleryContainer = targetImg.closest('.gallery-grid, .gallery-grid-5, .gallery-grid-2x2, .project-gallery-col, .project-gallery');
             const imagesInGallery = Array.from((galleryContainer || document).querySelectorAll('img'));
-            
+
             const galleryList = imagesInGallery.map(img => ({
                 src: img.src,
                 alt: img.alt || 'Project Image'
@@ -661,22 +671,22 @@ window.handleFormSubmit = function (e, formElement, pageContext) {
             Message: message
         })
     })
-    .then(function (res) { return res.json(); })
-    .then(function (data) {
-        showGlobalToast('Thank you, ' + (name || 'there') + '! Your message has been sent successfully.');
-        form.reset();
-    })
-    .catch(function (err) {
-        console.error('Submission error:', err);
-        showGlobalToast('Thank you, ' + (name || 'there') + '! Your message has been sent successfully.');
-        form.reset();
-    })
-    .finally(function () {
-        if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalBtnText;
-        }
-    });
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+            showGlobalToast('Thank you, ' + (name || 'there') + '! Your message has been sent successfully.');
+            form.reset();
+        })
+        .catch(function (err) {
+            console.error('Submission error:', err);
+            showGlobalToast('Thank you, ' + (name || 'there') + '! Your message has been sent successfully.');
+            form.reset();
+        })
+        .finally(function () {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
+        });
 
     return false;
 };
@@ -731,3 +741,96 @@ window.closeToast = function () {
     clearTimeout(window.toastTimer);
 };
 
+const form = document.getElementById("contactForm");
+if (form) {
+    const formMessage = document.getElementById("formMessage");
+    const submitButton = document.getElementById("submitButton");
+
+    form.addEventListener("submit", async function (event) {
+
+        // Stop normal page reload
+        event.preventDefault();
+
+        // Show sending message
+        if (formMessage) {
+            formMessage.style.display = "block";
+            formMessage.className = "";
+            formMessage.textContent = "Sending message...";
+        }
+
+        // Disable button while sending
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = "SENDING...";
+        }
+
+        // Get form data
+        const formData = new FormData(form);
+
+        const data = {
+            name: formData.get("name"),
+            email: formData.get("email"),
+            phone: formData.get("phone"),
+            projectType: formData.get("projectType"),
+            message: formData.get("message")
+        };
+
+        try {
+
+            // Send data to backend
+            const response = await fetch("/api/contact", {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            // SUCCESS
+            if (response.ok && result.success) {
+
+                if (formMessage) {
+                    formMessage.className = "success";
+                    formMessage.textContent =
+                        "✓ Message sent successfully! Thank you for contacting us. We'll get back to you soon.";
+                }
+
+                // Clear form
+                form.reset();
+
+            }
+
+            // ERROR
+            else {
+
+                if (formMessage) {
+                    formMessage.className = "error";
+                    formMessage.textContent =
+                        "✕ Failed to send message. Please try again.";
+                }
+            }
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            if (formMessage) {
+                formMessage.className = "error";
+                formMessage.textContent =
+                    "✕ Something went wrong. Please try again later.";
+            }
+        }
+
+        // Enable button again
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = "SEND MESSAGE →";
+        }
+    });
+}
